@@ -1,4 +1,5 @@
-const components = []
+import Scrollbar from '../packages/scrollbar/index.js'
+const components = [Scrollbar]
 
 const install = function (Vue, opts = {}) {
     if (install.installed) return
@@ -14,5 +15,6 @@ if (typeof window !== 'undefined' && window.Vue) {
 }
 
 export default {
-    install
+    install,
+    Scrollbar
 }

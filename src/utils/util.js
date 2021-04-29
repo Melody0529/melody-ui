@@ -198,21 +198,21 @@ export const isEmpty = function (val) {
     if (val instanceof Error) return val.message === ''
 
     switch (Object.prototype.toString.call(val)) {
-        // String or Array
-        case '[object String]':
-        case '[object Array]':
-            return !val.length
+    // String or Array
+    case '[object String]':
+    case '[object Array]':
+        return !val.length
 
         // Map or Set or File
-        case '[object File]':
-        case '[object Map]':
-        case '[object Set]': {
-            return !val.size
-        }
-        // Plain Object
-        case '[object Object]': {
-            return !Object.keys(val).length
-        }
+    case '[object File]':
+    case '[object Map]':
+    case '[object Set]': {
+        return !val.size
+    }
+    // Plain Object
+    case '[object Object]': {
+        return !Object.keys(val).length
+    }
     }
 
     return false

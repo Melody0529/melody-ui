@@ -86,6 +86,8 @@
     .nav-logo,
     .nav-logo-small {
         vertical-align: sub;
+        width: 38px;
+        height: 38px;
     }
 
     .nav-logo-small {
@@ -210,6 +212,8 @@
         }
         .nav-logo-small {
             display: inline-block;
+            width: 30px;
+            height: 30px;
         }
         .nav-item {
             margin-left: 6px;
@@ -276,8 +280,8 @@
                 <h1>
                     <router-link :to="`/${lang}`">
                         <slot>
-                            <!-- <img :src="imgUrl" alt="element-logo" class="nav-logo" />
-                            <img :src="imgsmallUrl" alt="element-logo" class="nav-logo-small" /> -->
+                            <img :src="imgUrl" alt="element-logo" class="nav-logo" />
+                            <img :src="imgsmallUrl" alt="element-logo" class="nav-logo-small" />
                         </slot>
                     </router-link>
                 </h1>
@@ -303,8 +307,8 @@ export default {
             active: '',
             versions: [],
             version,
-            imgUrl: require('../assets/img/element-logo.svg'),
-            imgsmallUrl: require('../assets/img/element-logo-small.svg'),
+            imgUrl: require('../assets/img/logo1.png'),
+            imgsmallUrl: require('../assets/img/logo1.png'),
             langs: {
                 'zh-CN': '中文'
             }
@@ -315,6 +319,7 @@ export default {
             return this.$route.path.split('/')[1] || 'zh-CN'
         },
         langConfig() {
+            console.log(compoLang.filter((config) => config.lang === this.lang)[0]['header'])
             return compoLang.filter((config) => config.lang === this.lang)[0]['header']
         }
     },
