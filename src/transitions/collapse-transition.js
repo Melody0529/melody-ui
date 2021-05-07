@@ -66,6 +66,7 @@ const Transition = {
 
 export default {
     name: 'MCollapseTransition',
+    // 设置为函数化组件
     functional: true,
     render(h, { children }) {
         const data = {

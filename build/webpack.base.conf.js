@@ -52,7 +52,8 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                include: [resolve('examples'), resolve('test'), resolve('packages'), resolve('src')]
+                include: [resolve('examples'), resolve('test'), resolve('packages'), resolve('src')],
+                exclude: [resolve('src/utils/popper.js')]
             },
             {
                 test: /\.(css)$/,

@@ -50,8 +50,8 @@
     }
 }
 
-/* Placeholder
- -------------------------- */
+// /* Placeholder
+//  -------------------------- */
 @mixin placeholder {
     &::-webkit-input-placeholder {
         @content;
@@ -75,21 +75,6 @@
 
     .#{$B} {
         @content;
-    }
-}
-
-@mixin m($modifier) {
-    $selector: &;
-    $currentSelector: "";
-
-    @each $unit in $modifier {
-        $currentSelector: #{$currentSelector + & + $modifier-separator + $unit + ","};
-    }
-
-    @at-root {
-        #{$currentSelector} {
-            @content;
-        }
     }
 }
 

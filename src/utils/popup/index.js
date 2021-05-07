@@ -5,7 +5,9 @@ import getScrollBarWidth from '../scrollbar-width'
 import { getStyle, addClass, removeClass, hasClass } from '../dom'
 
 let idSeed = 1
+
 let scrollBarWidth
+
 export default {
     props: {
         visible: {
@@ -41,15 +43,19 @@ export default {
             default: false
         }
     },
+
     beforeMount() {
         this._popupId = 'popup-' + idSeed++
         PopupManager.register(this._popupId, this)
     },
+
     beforeDestroy() {
         PopupManager.deregister(this._popupId)
         PopupManager.closeModal(this._popupId)
+
         this.restoreBodyStyle()
     },
+
     data() {
         return {
             opened: false,
@@ -59,6 +65,7 @@ export default {
             rendered: false
         }
     },
+
     watch: {
         visible(val) {
             if (val) {
@@ -66,7 +73,7 @@ export default {
                 if (!this.rendered) {
                     this.rendered = true
                     Vue.nextTick(() => {
-                        this.open
+                        this.open()
                     })
                 } else {
                     this.open()
@@ -76,12 +83,15 @@ export default {
             }
         }
     },
+
     methods: {
         open(options) {
             if (!this.rendered) {
                 this.rendered = true
             }
+
             const props = merge({}, this.$props || this, options)
+
             if (this._closeTimer) {
                 clearTimeout(this._closeTimer)
                 this._closeTimer = null
@@ -98,24 +108,29 @@ export default {
                 this.doOpen(props)
             }
         },
+
         doOpen(props) {
             if (this.$isServer) return
             if (this.willOpen && !this.willOpen()) return
             if (this.opened) return
 
             this._opening = true
+
             const dom = this.$el
+
             const modal = props.modal
+
             const zIndex = props.zIndex
             if (zIndex) {
                 PopupManager.zIndex = zIndex
             }
+
             if (modal) {
                 if (this._closing) {
                     PopupManager.closeModal(this._popupId)
                     this._closing = false
                 }
-                PopupManager.openModal(this._popupId.PopupManager.nextZIndex(), this.modalAppendToBody ? undefined : dom, props.modalClass, props.modalFade)
+                PopupManager.openModal(this._popupId, PopupManager.nextZIndex(), this.modalAppendToBody ? undefined : dom, props.modalClass, props.modalFade)
                 if (props.lockScroll) {
                     this.withoutHiddenClass = !hasClass(document.body, 'm-popup-parent--hidden')
                     if (this.withoutHiddenClass) {
@@ -131,24 +146,32 @@ export default {
                     addClass(document.body, 'm-popup-parent--hidden')
                 }
             }
+
             if (getComputedStyle(dom).position === 'static') {
                 dom.style.position = 'absolute'
             }
+
             dom.style.zIndex = PopupManager.nextZIndex()
             this.opened = true
+
             this.onOpen && this.onOpen()
+
             this.doAfterOpen()
         },
-        deAfterOpen() {
+
+        doAfterOpen() {
             this._opening = false
         },
+
         close() {
             if (this.willClose && !this.willClose()) return
+
             if (this._openTimer !== null) {
                 clearTimeout(this._openTimer)
                 this._openTimer = null
             }
             clearTimeout(this._closeTimer)
+
             const closeDelay = Number(this.closeDelay)
 
             if (closeDelay > 0) {
@@ -160,19 +183,26 @@ export default {
                 this.doClose()
             }
         },
+
         doClose() {
             this._closing = true
+
             this.onClose && this.onClose()
+
             if (this.lockScroll) {
                 setTimeout(this.restoreBodyStyle, 200)
             }
+
             this.opened = false
+
             this.doAfterClose()
         },
+
         doAfterClose() {
             PopupManager.closeModal(this._popupId)
             this._closing = false
         },
+
         restoreBodyStyle() {
             if (this.modal && this.withoutHiddenClass) {
                 document.body.style.paddingRight = this.bodyPaddingRight

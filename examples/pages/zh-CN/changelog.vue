@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span>sdsdsd</span>
+        <span>更新日志</span>
     </div>
 </template>
 <script>
