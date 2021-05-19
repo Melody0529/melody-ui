@@ -1,17 +1,17 @@
 @import "common/var.scss";
 
 @font-face {
-    font-family: 'melodyUI-icons';
-    src: url('#{$--font-path}/melodyUI-icons.woff') format('woff'), /* chrome, firefox */
-         url('#{$--font-path}/melodyUI-icons.ttf') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
+    font-family: 'melody-icons';
+    src: url('#{$--font-path}/melody-icons.woff') format('woff'), /* chrome, firefox */
+         url('#{$--font-path}/melody-icons.ttf') format('truetype'); /* chrome, firefox, opera, Safari, Android, iOS 4.2+*/
     font-weight: normal;
     font-display: $--font-display;
     font-style: normal;
-  }
+}
 
-  [class^="m-icon-"], [class*=" m-icon-"] {
+[class^="m-icon-"], [class*=" m-icon-"] {
     /* use !important to prevent issues with browser extensions that change fonts */
-    font-family: 'melodyUI-icons' !important;
+    font-family: 'melody-icons' !important;
     speak: none;
     font-style: normal;
     font-weight: normal;
@@ -20,108 +20,117 @@
     line-height: 1;
     vertical-align: baseline;
     display: inline-block;
-  
+
     /* Better Font Rendering =========== */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-  }
+}
 
-  .m-icon-search:before {
+.m-icon-search:before {
     content: "\e9a1";
-  }
+}
 
-  .m-icon-edit:before {
+.m-icon-edit:before {
     content: "\e83e";
-  }
+}
 
-  .m-icon-check:before {
+.m-icon-check:before {
     content: "\e886";
-  }
+}
 
-  .m-icon-message:before {
+.m-icon-message:before {
     content: "\e79d";
-  }
+}
 
-  .m-icon-star:before {
+.m-icon-star:before {
     content: "\e839";
-  }
+}
 
-  .m-icon-delete:before {
+.m-icon-delete:before {
     content: "\e7f8";
-  }
+}
 
-  .m-icon-share:before {
+.m-icon-share:before {
     content: "\e84f";
-  }
+}
 
-  .m-icon-upload:before {
+.m-icon-upload:before {
     content: "\e862";
-  }
+}
 
-  .m-icon-left:before {
+.m-icon-left:before {
     content: "\e857";
-  }
+}
 
-  .m-icon-right:before {
+.m-icon-right:before {
     content: "\e856";
-  }
+}
 
-  .m-icon-loading:before {
-    content: "\e65b";
-  }
+.m-icon-loading:before {
+    content: "\e61c";
+}
 
-  .m-icon-view:before {
-    content: "\e608";
-  }
+.m-icon-eye:before {
+    content: "\e7a4";
+}
 
-  .m-icon-close-circle:before {
+.m-icon-close-circle:before {
     content: "\e781";
-  }
-  
-  .m-icon-date:before {
-    content: "\e627";
-  }
+}
 
-  .m-icon-check-circle:before {
+.m-icon-date:before {
+    content: "\e6b0";
+}
+
+.m-icon-check-circle:before {
     content: "\e77d";
-  }
-  
-  .m-icon-down:before {
+}
+
+.m-icon-down:before {
     content: "\e859";
-  }
+}
 
-  .m-icon-up:before {
+.m-icon-up:before {
     content: "\e858";
-  }
-  
-  .m-icon-minus:before {
+}
+
+.m-icon-minus:before {
     content: "\e88c";
-  }
+}
 
-  .m-icon-plus:before {
+.m-icon-plus:before {
     content: "\e9a9";
-  }
+}
 
-  .m-icon-close:before {
-      content: "\e889";
-  }
+.m-icon-close:before {
+    content: "\e889";
+}
 
-  .m-icon-loading {
+.m-icon-caret-up:before {
+    content: "\e99b";
+}
+
+.m-icon-caret-down:before {
+    content: "\e999";
+}
+
+.m-icon-loading {
     animation: rotating 2s linear infinite;
-  }
-  
-  .m-icon--right {
+}
+
+.m-icon--right {
     margin-left: 5px;
-  }
-  .m-icon--left {
+}
+
+.m-icon--left {
     margin-right: 5px;
-  }
-  
-  @keyframes rotating {
+}
+
+@keyframes rotating {
     0% {
-      transform: rotateZ(0deg);
+        transform: rotateZ(0deg);
     }
     100% {
-      transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
     }
-  }
+}

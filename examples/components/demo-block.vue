@@ -248,7 +248,7 @@ export default {
         },
 
         iconClass() {
-            return this.isExpanded ? 'm-icon-caret-top' : 'm-icon-caret-bottom'
+            return this.isExpanded ? 'm-icon-caret-up' : 'm-icon-caret-down'
         },
 
         controlText() {
