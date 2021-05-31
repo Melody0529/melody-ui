@@ -12,7 +12,34 @@ import Button from '../packages/button/index.js'
 import ButtonGroup from '../packages/button-group/index.js'
 import Link from '../packages/link/index.js'
 import CollapseTransition from 'melody-ui/src/transitions/collapse-transition'
-const components = [Scrollbar, Row, Col, Container, Header, Aside, Main, Footer, Tooltip, Icon, Button, ButtonGroup, Link, CollapseTransition]
+import Radio from '../packages/radio/index.js'
+import RadioGroup from '../packages/radio-group/index.js'
+import RadioButton from '../packages/radio-button/index.js'
+import Checkbox from '../packages/checkbox/index.js'
+import CheckboxGroup from '../packages/checkbox-group/index.js'
+import CheckboxButton from '../packages/checkbox-button/index.js'
+const components = [
+    Scrollbar,
+    Row,
+    Col,
+    Container,
+    Header,
+    Aside,
+    Main,
+    Footer,
+    Tooltip,
+    Icon,
+    Button,
+    ButtonGroup,
+    Link,
+    CollapseTransition,
+    Radio,
+    RadioGroup,
+    RadioButton,
+    Checkbox,
+    CheckboxGroup,
+    CheckboxButton
+]
 
 const install = function (Vue, opts = {}) {
     if (install.installed) return
@@ -42,5 +69,11 @@ export default {
     Button,
     ButtonGroup,
     Link,
-    CollapseTransition
+    CollapseTransition,
+    Radio,
+    RadioGroup,
+    RadioButton,
+    Checkbox,
+    CheckboxGroup,
+    CheckboxButton
 }

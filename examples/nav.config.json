@@ -67,6 +67,39 @@
                     ]
                 },
                 {
+                    "groupName": "Form",
+                    "list": [
+                        {
+                            "path": "/radio",
+                            "title": "Radio 单选框"
+                        },
+                        {
+                            "path": "/checkbox",
+                            "title": "Checkbox 多选框"
+                        },
+                        {
+                            "path": "/input",
+                            "title": "Input 输入框"
+                        },
+                        {
+                            "path": "/input-number",
+                            "title": "InputNumber 计数器"
+                        },
+                        {
+                            "path": "/select",
+                            "title": "Select 选择器"
+                        },
+                        {
+                            "path": "/cascader",
+                            "title": "Cascader 级联选择器"
+                        },
+                        {
+                            "path": "/switch",
+                            "title": "Switch 开关"
+                        }
+                    ]
+                },
+                {
                     "groupName": "Others",
                     "list": [
                         {
