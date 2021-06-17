@@ -18,6 +18,7 @@ import RadioButton from '../packages/radio-button/index.js'
 import Checkbox from '../packages/checkbox/index.js'
 import CheckboxGroup from '../packages/checkbox-group/index.js'
 import CheckboxButton from '../packages/checkbox-button/index.js'
+import Input from '../packages/input/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -38,7 +39,8 @@ const components = [
     RadioButton,
     Checkbox,
     CheckboxGroup,
-    CheckboxButton
+    CheckboxButton,
+    Input
 ]
 
 const install = function (Vue, opts = {}) {
@@ -75,5 +77,6 @@ export default {
     RadioButton,
     Checkbox,
     CheckboxGroup,
-    CheckboxButton
+    CheckboxButton,
+    Input
 }
