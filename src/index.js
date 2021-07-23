@@ -20,6 +20,10 @@ import CheckboxGroup from '../packages/checkbox-group/index.js'
 import CheckboxButton from '../packages/checkbox-button/index.js'
 import Input from '../packages/input/index.js'
 import InputNumber from '../packages/input-number/index.js'
+import Select from '../packages/select/index.js'
+import Option from '../packages/option/index.js'
+import OptionGroup from '../packages/option-group/index.js'
+import Tag from '../packages/tag/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -42,7 +46,11 @@ const components = [
     CheckboxGroup,
     CheckboxButton,
     Input,
-    InputNumber
+    InputNumber,
+    Select,
+    Option,
+    OptionGroup,
+    Tag
 ]
 
 const install = function (Vue, opts = {}) {
@@ -81,5 +89,9 @@ export default {
     CheckboxGroup,
     CheckboxButton,
     Input,
-    InputNumber
+    InputNumber,
+    Select,
+    Option,
+    OptionGroup,
+    Tag
 }

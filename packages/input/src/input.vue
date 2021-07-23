@@ -198,6 +198,12 @@ export default {
         }
     },
     methods: {
+        focus() {
+            this.getInput().focus()
+        },
+        blur() {
+            this.getInput().blur()
+        },
         clear() {
             this.$emit('input', '')
             this.$emit('change', '')
@@ -209,9 +215,11 @@ export default {
         },
         handleBlur(event) {
             this.focused = false
+            this.$emit('blur', event)
         },
         handleFocus(event) {
             this.focused = true
+            this.$emit('focus', event)
         },
         handleInput(event) {
             if (event.target.value === this.nativeInputValue) return

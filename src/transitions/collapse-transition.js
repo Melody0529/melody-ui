@@ -70,7 +70,7 @@ export default {
     functional: true,
     render(h, { children }) {
         const data = {
-            on: Transition
+            on: new Transition()
         }
 
         return h('transition', data, children)
