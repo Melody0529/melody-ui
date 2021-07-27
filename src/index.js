@@ -24,6 +24,7 @@ import Select from '../packages/select/index.js'
 import Option from '../packages/option/index.js'
 import OptionGroup from '../packages/option-group/index.js'
 import Tag from '../packages/tag/index.js'
+import Switch from '../packages/switch/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -50,7 +51,8 @@ const components = [
     Select,
     Option,
     OptionGroup,
-    Tag
+    Tag,
+    Switch
 ]
 
 const install = function (Vue, opts = {}) {
@@ -93,5 +95,6 @@ export default {
     Select,
     Option,
     OptionGroup,
-    Tag
+    Tag,
+    Switch
 }
