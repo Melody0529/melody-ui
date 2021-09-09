@@ -1,7 +1,7 @@
 <template>
-    <div 
-        class="m-checkbox-group" 
-        role="group" 
+    <div
+        class="m-checkbox-group"
+        role="group"
         aria-label="checkbox-group">
         <slot></slot>
     </div>

@@ -9,8 +9,10 @@ function broadcast(componentName, eventName, params) {
         }
     })
 }
+
 export default {
     methods: {
+        // 向上级派发事件
         dispatch(componentName, eventName, params) {
             var parent = this.$parent || this.$root
             var name = parent.$options.componentName
@@ -26,6 +28,7 @@ export default {
                 parent.$emit.apply(parent, [eventName].concat(params))
             }
         },
+        // 向下级派发事件
         broadcast(componentName, eventName, params) {
             broadcast.call(this, componentName, eventName, params)
         }

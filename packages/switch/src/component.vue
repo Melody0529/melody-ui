@@ -1,7 +1,7 @@
 <template>
     <div
         class='m-switch'
-        :class="{ 'is-disabled': switchDisabled, 'is-checked': checked }"
+        :class="{ 'is-disabled': switchDisabled , 'is-checked': checked }"
         role="switch"
         :aria-checked="checked"
         :aria-disabled="switchDisabled"
@@ -18,14 +18,14 @@
             :disabled="switchDisabled"
             @keydown.enter="switchValue">
         <span
-            :class="['m-switch__label', 'm-switch__label--left', !checked ? 'is-active' : '']"
+            :class="['m-switch__label','m-switch__label--left', !checked ? 'is-active' :'']"
             v-if="inactiveIconClass || inactiveText">
             <i :class="[inactiveIconClass]" v-if="inactiveIconClass"></i>
             <span v-if="!inactiveIconClass && inactiveText" :aria-hidden="checked">{{ inactiveText }}</span>
         </span>
         <span class="m-switch__core" ref="core" :style="{ 'width': coreWidth + 'px'}"></span>
         <span
-            :class="['m-switch__label', 'm-switch__label--right', checked ? 'is-active' : '']"
+            :class="['m-switch__label','m-switch__label--right', checked ? 'is-active' :'']"
             v-if="activeIconClass || activeText">
             <i :class="[activeIconClass]" v-if="activeIconClass"></i>
             <span v-if="!activeIconClass && activeText" :aria-hidden="!checked">{{ activeText }}</span>
@@ -115,7 +115,6 @@ export default {
                 this.setBackgroundColor()
             }
         }
-
     },
     methods: {
         handleChange(event) {
@@ -123,8 +122,6 @@ export default {
             this.$emit('input', val)
             this.$emit('change', val)
             this.$nextTick(() => {
-                // set input's checked property
-                // in case parent refuses to change component's value
                 this.$refs.input.checked = this.checked
             })
         },
@@ -135,20 +132,6 @@ export default {
         },
         switchValue() {
             !this.switchDisabled && this.handleChange()
-        },
-        getMigratingConfig() {
-            return {
-                props: {
-                    'on-color': 'on-color is renamed to active-color.',
-                    'off-color': 'off-color is renamed to inactive-color.',
-                    'on-text': 'on-text is renamed to active-text.',
-                    'off-text': 'off-text is renamed to inactive-text.',
-                    'on-value': 'on-value is renamed to active-value.',
-                    'off-value': 'off-value is renamed to inactive-value.',
-                    'on-icon-class': 'on-icon-class is renamed to active-icon-class.',
-                    'off-icon-class': 'off-icon-class is renamed to inactive-icon-class.'
-                }
-            }
         }
     },
     mounted() {

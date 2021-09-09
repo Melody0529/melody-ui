@@ -9,7 +9,7 @@
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
-    background: $--button-default-background-color;
+    background-color: $--button-disabled-background-color;
     border: $--border-base;
     border-color: $--button-default-border-color;
     color: $--button-default-font-color;
@@ -100,7 +100,7 @@
     @include when(loading) {
         position: relative;
         pointer-events: none;
-
+    
         &:before {
             pointer-events: none;
             content: '';
@@ -113,14 +113,17 @@
             background-color: rgba(255,255,255,.35);
         }
     }
+
     @include when(round) {
         border-radius: 20px;
         padding: 12px 23px;
     }
+
     @include when(circle) {
         border-radius: 50%;
         padding: $--button-padding-vertical;
     }
+
     @include m(primary) {
         @include button-variant($--button-primary-font-color, $--button-primary-background-color, $--button-primary-border-color);
     }
@@ -136,6 +139,7 @@
     @include m(info) {
         @include button-variant($--button-info-font-color, $--button-info-background-color, $--button-info-border-color);
     }
+
     @include m(medium) {
         @include button-size($--button-medium-padding-vertical, $--button-medium-padding-horizontal, $--button-medium-font-size, $--button-medium-border-radius);
         @include when(circle) {
@@ -154,13 +158,14 @@
             padding: $--button-mini-padding-vertical;
         }
     }
+
     @include m(text) {
         border-color: transparent;
         color: $--color-primary;
         background: transparent;
         padding-left: 0;
         padding-right: 0;
-
+    
         &:hover,
         &:focus {
             color: mix($--color-white, $--color-primary, $--button-hover-tint-percent);
@@ -172,7 +177,7 @@
             border-color: transparent;
             background-color: transparent;
         }
-
+    
         &.is-disabled,
         &.is-disabled:hover,
         &.is-disabled:focus {
@@ -208,11 +213,11 @@
             border-bottom-right-radius: $--button-border-radius;
             border-top-left-radius: $--button-border-radius;
             border-bottom-left-radius: $--button-border-radius;
-
+    
             &.is-round {
                 border-radius: 20px;
             }
-
+    
             &.is-circle {
                 border-radius: 50%;
             }
@@ -223,18 +228,18 @@
         &:not(:last-child) {
             margin-right: -1px;
         }
-
+    
         &:hover,
         &:focus,
         &:active {
             z-index: 1;
         }
-
+    
         @include when(active) {
             z-index: 1;
         }
     }
-    
+      
     & > .m-dropdown {
         & > .m-button {
             border-top-left-radius: 0;

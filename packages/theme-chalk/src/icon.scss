@@ -114,6 +114,22 @@
     content: "\e999";
 }
 
+.m-icon-star:before {
+    content: "\e839";
+}
+
+.m-icon-star-fill:before {
+    content: "\e90e";
+}
+
+.m-icon-heart:before {
+    content: "\e836";
+}
+
+.m-icon-heart-fill:before {
+    content: "\e8b3";
+}
+
 .m-icon-loading {
     animation: rotating 2s linear infinite;
 }

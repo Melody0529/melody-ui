@@ -132,12 +132,11 @@ export default {
         this.$on('handleGroupDisabled', this.handleGroupDisabled)
     },
     beforeDestroy() {
-        const { selected, multiple } = this.select
+        const {selected, multiple} = this.select
         let selectedOptions = multiple ? selected : [selected]
         let index = this.select.cachedOptions.indexOf(this)
         let selectedIndex = selectedOptions.indexOf(this)
 
-        // if option is not selected, remove it from cache
         if (index > -1 && selectedIndex < 0) {
             this.select.cachedOptions.splice(index, 1)
         }

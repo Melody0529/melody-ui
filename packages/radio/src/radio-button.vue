@@ -89,7 +89,7 @@ export default {
     },
     methods: {
         handleChange() {
-            this.$nextTick(()=>{
+            this.$nextTick(() => {
                 this.dispatch('MRadioGroup', 'handleChange', this.value)
             })
         }

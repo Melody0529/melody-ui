@@ -10,7 +10,7 @@
             ref="tags"
             :style="{ 'max-width': inputWidth - 32 + 'px', width: '100%' }">
             <span v-if="collapseTags && selected.length">
-                <m-tag
+                  <m-tag
                     :closable="!selectDisabled"
                     :size="collapseTagSize"
                     :hit="selected[0].hitState"
@@ -28,7 +28,7 @@
                     <span class="m-select__tags-text">+ {{ selected.length - 1 }}</span>
                 </m-tag>
             </span>
-            <transition-group  @after-leave="resetInputHeight"  v-if="!collapseTags">
+            <transition-group @after-leave="resetInputHeight" v-if="!collapseTags">
                 <m-tag
                     v-for="item in selected"
                     :key="getValueKey(item)"
@@ -44,7 +44,7 @@
             <input
                 type="text"
                 class="m-select__input"
-                 :class="[selectSize ? `is-${ selectSize }` : '']"
+                :class="[selectSize ? `is-${ selectSize }` : '']"
                 :disabled="selectDisabled"
                 :autocomplete="autoComplete || autocomplete"
                 @focus="handleFocus"
@@ -121,7 +121,7 @@
                     </m-option>
                     <slot></slot>
                 </m-scrollbar>
-                <template v-if="emptyText && (!allowCreate || loading || (allowCreate && options.length === 0 ))">
+               <template v-if="emptyText && (!allowCreate || loading || (allowCreate && options.length === 0 ))">
                     <slot name="empty" v-if="$slots.empty"></slot>
                     <p class="m-select-dropdown__empty" v-else>
                         {{ emptyText }}
@@ -205,9 +205,9 @@ export default {
     components: {
         MInput,
         MSelectMenu,
+        MScrollbar,
         MOption,
-        MTag,
-        MScrollbar
+        MTag
     },
     directives: { Clickoutside },
     props: {
@@ -380,7 +380,7 @@ export default {
             if (this.multiple) {
                 this.resetInputHeight()
             }
-            let inputs = this.$el.querySelectorAll('input')
+            const inputs = this.$el.querySelectorAll('input')
             if ([].indexOf.call(inputs, document.activeElement) === -1) {
                 this.setSelected()
             }
@@ -458,7 +458,7 @@ export default {
 
             for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
                 const cachedOption = this.cachedOptions[i]
-                const isEqual = isObject ? getValueByPath(cachedOption.value, this.valueKey) === getValueByPath(value, this.valueKey) : cachedOption.value === value
+                const isEqual = cachedOption.value === value
                 if (isEqual) {
                     option = cachedOption
                     break
@@ -491,7 +491,7 @@ export default {
             }
             let result = []
             if (Array.isArray(this.value)) {
-                this.value.forEach((value) => {
+                this.value.forEach(value => {
                     result.push(this.getOption(value))
                 })
             }
@@ -536,7 +536,6 @@ export default {
         handleClose() {
             this.visible = false
         },
-
         toggleLastOptionHitState(hit) {
             if (!Array.isArray(this.selected)) return
             const option = this.selected[this.selected.length - 1]
@@ -656,8 +655,6 @@ export default {
             }
         },
         toggleMenu() {
-            console.log(this.$refs.input)
-            console.log(this.$refs.reference)
             if (!this.selectDisabled) {
                 if (this.menuVisibleOnFocus) {
                     this.menuVisibleOnFocus = false
@@ -789,7 +786,7 @@ export default {
             const input = reference.$el.querySelector('input')
             this.initialInputHeight = input.getBoundingClientRect().height || sizeMap[this.selectSize]
         }
-        if (this.remote && this.multiple) {
+        if (this.multiple) {
             this.resetInputHeight()
         }
         this.$nextTick(() => {

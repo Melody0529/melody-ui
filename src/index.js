@@ -25,6 +25,13 @@ import Option from '../packages/option/index.js'
 import OptionGroup from '../packages/option-group/index.js'
 import Tag from '../packages/tag/index.js'
 import Switch from '../packages/switch/index.js'
+import Cascader from '../packages/cascader/index.js'
+import CascaderPanel from '../packages/cascader-panel/index.js'
+import Slider from '../packages/slider/index.js'
+import DatePicker from '../packages/date-picker/index.js'
+import TimeSelect from '../packages/time-select/index.js'
+import TimePicker from '../packages/time-picker/index.js'
+import Rate from '../packages/rate/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -52,7 +59,14 @@ const components = [
     Option,
     OptionGroup,
     Tag,
-    Switch
+    Switch,
+    Cascader,
+    CascaderPanel,
+    Slider,
+    DatePicker,
+    TimeSelect,
+    TimePicker,
+    Rate
 ]
 
 const install = function (Vue, opts = {}) {
@@ -96,5 +110,12 @@ export default {
     Option,
     OptionGroup,
     Tag,
-    Switch
+    Switch,
+    Cascader,
+    CascaderPanel,
+    Slider,
+    DatePicker,
+    TimeSelect,
+    TimePicker,
+    Rate
 }

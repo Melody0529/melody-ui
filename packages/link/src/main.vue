@@ -1,5 +1,5 @@
 <template>
-  <a 
+  <a
     :class="[
         'm-link',
         type ? `m-link--${type}` : '',
@@ -9,11 +9,11 @@
     :href="disabled ? null : href"
     v-bind="$attrs"
     @click="handleClick">
-        <i :class="icon" v-if="icon"></i>
-        <span v-if="$slots.default" class="m-link--inner">
-            <slot></slot>
-        </span>
-        <template v-if="$slots.icon"><slot v-if="$slots.icon" name="icon"></slot></template>
+    <i :class="icon" v-if="icon"></i>
+    <span v-if="$slots.default" class="m-link--inner">
+        <slot></slot>
+    </span>
+   <template v-if="$slots.icon"><slot v-if="$slots.icon" name="icon"></slot></template>
   </a>
 </template>
 
@@ -40,7 +40,7 @@ export default {
         handleClick(event) {
             if (!this.disabled) {
                 if (!this.href) {
-                    this.$emit('click', event);
+                    this.$emit('click', event)
                 }
             }
         }

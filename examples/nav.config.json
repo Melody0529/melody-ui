@@ -96,6 +96,42 @@
                         {
                             "path": "/switch",
                             "title": "Switch 开关"
+                        },
+                        {
+                            "path": "/slider",
+                            "title": "Slider 滑块"
+                        },
+                        {
+                            "path": "/time-picker",
+                            "title": "TimePicker 时间选择器"
+                        },
+                        {
+                            "path": "/date-picker",
+                            "title": "DatePicker 日期选择器"
+                        },
+                        {
+                            "path": "/datetime-picker",
+                            "title": "DateTimePicker 日期时间选择器"
+                        },
+                        {
+                            "path": "/upload",
+                            "title": "Upload 上传"
+                        },
+                        {
+                            "path": "/rate",
+                            "title": "Rate 评分"
+                        },
+                        {
+                            "path": "/color-picker",
+                            "title": "ColorPicker 颜色选择器"
+                        },
+                        {
+                            "path": "/transfer",
+                            "title": "Transfer 穿梭框"
+                        },
+                        {
+                            "path": "/form",
+                            "title": "Form 表单"
                         }
                     ]
                 },
@@ -103,8 +139,86 @@
                     "groupName": "Data",
                     "list": [
                         {
+                            "path": "/table",
+                            "title": "Table 表格"
+                        },
+                        {
                             "path": "/tag",
                             "title": "Tag 标签"
+                        },
+                        {
+                            "path": "/progress",
+                            "title": "Progress 进度条"
+                        },
+                        {
+                            "path": "/tree",
+                            "title": "Tree 树形控件"
+                        },
+                        {
+                            "path": "/pagination",
+                            "title": "Pagination 分页"
+                        },
+                        {
+                            "path": "/badge",
+                            "title": "Badge 标记"
+                        },
+                        {
+                            "path": "/avatar",
+                            "title": "Avatar 头像"
+                        }
+                    ]
+                },
+                {
+                    "groupName": "Notice",
+                    "list": [
+                        {
+                            "path": "/alert",
+                            "title": "Alert 警告"
+                        },
+                        {
+                            "path": "/loading",
+                            "title": "Loading 加载"
+                        },
+                        {
+                            "path": "/message",
+                            "title": "Message 消息提示"
+                        },
+                        {
+                            "path": "/message-box",
+                            "title": "MessageBox 弹框"
+                        },
+                        {
+                            "path": "/notification",
+                            "title": "Notification 通知"
+                        }
+                    ]
+                },
+                {
+                    "groupName": "Navigation",
+                    "list": [
+                        {
+                            "path": "/menu",
+                            "title": "NavMenu 导航菜单"
+                        },
+                        {
+                            "path": "/tabs",
+                            "title": "Tabs 标签页"
+                        },
+                        {
+                            "path": "/breadcrumb",
+                            "title": "Breadcrumb 面包屑"
+                        },
+                        {
+                            "path": "/page-header",
+                            "title": "PageHeader 页头"
+                        },
+                        {
+                            "path": "/dropdown",
+                            "title": "Dropdown 下拉菜单"
+                        },
+                        {
+                            "path": "/steps",
+                            "title": "Steps 步骤条"
                         }
                     ]
                 },
@@ -112,8 +226,185 @@
                     "groupName": "Others",
                     "list": [
                         {
+                            "path": "/dialog",
+                            "title": "Dialog 对话框"
+                        },
+                        {
                             "path": "/tooltip",
                             "title": "Tooltip 文字提示"
+                        },
+                        {
+                            "path": "/popover",
+                            "title": "Popover 弹出框"
+                        },
+                        {
+                            "path": "/popconfirm",
+                            "title": "Popconfirm 气泡确认框"
+                        },
+                        {
+                            "path": "/card",
+                            "title": "Card 卡片"
+                        },
+                        {
+                            "path": "/carousel",
+                            "title": "Carousel 走马灯"
+                        },
+                        {
+                            "path": "/collapse",
+                            "title": "Collapse 折叠面板"
+                        },
+                        {
+                            "path": "/timeline",
+                            "title": "Timeline 时间线"
+                        },
+                        {
+                            "path": "/divider",
+                            "title": "Divider 分割线"
+                        },
+                        {
+                            "path": "/calendar",
+                            "title": "Calendar 日历"
+                        },
+                        {
+                            "path": "/image",
+                            "title": "Image 图片"
+                        },
+                        {
+                            "path": "/backtop",
+                            "title": "Backtop 回到顶部"
+                        },
+                        {
+                            "path": "/infiniteScroll",
+                            "title": "InfiniteScroll 无限滚动"
+                        },
+                        {
+                            "path": "/drawer",
+                            "title": "Drawer 抽屉"
+                        }
+                    ]
+                },
+                {
+                    "groupName": "Others1",
+                    "list": [
+                        {
+                            "path": "/Grid",
+                            "title": "Grid 栅格"
+                        },
+                        {
+                            "path": "/SimpleSelect",
+                            "title": "SimpleSelect 简单选择器"
+                        },
+                        {
+                            "path": "/fastDate",
+                            "title": "fastDate 快速日期选择器"
+                        },
+                        {
+                            "path": "/typefield",
+                            "title": "typefield 金额框"
+                        },
+                        {
+                            "path": "/FormGird",
+                            "title": "FormGird 表单表格"
+                        },
+                        {
+                            "path": "/selctTable",
+                            "title": "selctTable 下拉表格"
+                        },
+                        {
+                            "path": "/editGird",
+                            "title": "editGird 可编辑表格"
+                        },
+                        {
+                            "path": "/groupTable",
+                            "title": "groupTable 分组表格"
+                        },
+                        {
+                            "path": "/treeGird",
+                            "title": "treeGird 树表格"
+                        },
+                        {
+                            "path": "/asycTreeGird",
+                            "title": "asycTreeGird 异步树表格"
+                        },
+                        {
+                            "path": "/TransferTable",
+                            "title": "TransferTable 穿梭表格"
+                        },
+                        {
+                            "path": "/SimpleTable",
+                            "title": "SimpleTable 简单表格"
+                        },
+                        {
+                            "path": "/SimpleTreeGird",
+                            "title": "SimpleTreeGird 简单树表格"
+                        },
+                        {
+                            "path": "/selectTree",
+                            "title": "selectTree 下拉树"
+                        },
+                        {
+                            "path": "/TransferTable",
+                            "title": "TransferTable 穿梭表格"
+                        },
+                        {
+                            "path": "/SimpleTable",
+                            "title": "SimpleTable 简单表格"
+                        },
+                        {
+                            "path": "/SimpleTreeGird",
+                            "title": "SimpleTreeGird 简单树表格"
+                        },
+                        {
+                            "path": "/selectTree",
+                            "title": "selectTree 下拉树"
+                        },
+                        {
+                            "path": "/Drawer",
+                            "title": "Drawer 侧边弹出框"
+                        },
+                        {
+                            "path": "/Schedule",
+                            "title": "Schedule 日程表"
+                        },
+                        {
+                            "path": "/FieldPanel",
+                            "title": "FieldPanel 折叠面板"
+                        },
+                        {
+                            "path": "/LoadingBar",
+                            "title": "LoadingBar 加载进度条"
+                        },
+                        {
+                            "path": "/Circle",
+                            "title": "Circle 进度环"
+                        },
+                        {
+                            "path": "/Affix",
+                            "title": "Affix 图钉"
+                        },
+                        {
+                            "path": "/Gobottom",
+                            "title": "Gobottom 直达底部"
+                        },
+                        {
+                            "path": "/Textdiff",
+                            "title": "Textdiff 文本对比"
+                        },
+                        {
+                            "path": "/Split",
+                            "title": "Split 面板分割"
+                        },
+                        {
+                            "path": "/FileImport",
+                            "title": "FileImport 文件导入"
+                        },
+                        {
+                            "path": "/FileExport",
+                            "title": "FileExport 文件导出"
+                        },
+                        {
+                            "path": "/Log",
+                            "title": "Log 日志面板"
                         }
                     ]
                 }

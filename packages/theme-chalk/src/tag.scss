@@ -16,41 +16,44 @@
             color: $--color-white;
             background-color: mix($--tag-primary-color, $--color-white, $hoverColorWeight);
         }
-    }
 
-    &.m-tag--info {
-        background-color: mix($--tag-info-color, $--color-white, $backgroundColorWeight);
-        border-color: mix($--tag-info-color, $--color-white, $borderColorWeight);
-        color: mix($--tag-info-color, $--color-white, $fontColorWeight);
-    
-        @include when(hit) {
-            border-color: $--tag-info-color;
-        }
-    
-        .m-tag__close {
-            color: mix($--tag-info-color, $--color-white, $fontColorWeight);
-            &:hover {
-                color: $--color-white;
-                background-color: mix($--tag-info-color, $--color-white, $hoverColorWeight);
-            }
-        }
     }
 
     &.m-tag--success {
         background-color: mix($--tag-success-color, $--color-white, $backgroundColorWeight);
         border-color: mix($--tag-success-color, $--color-white, $borderColorWeight);
         color: mix($--tag-success-color, $--color-white, $fontColorWeight);
-    
+
         @include when(hit) {
             border-color: $--tag-success-color;
         }
-    
+
         .m-tag__close {
             color: mix($--tag-success-color, $--color-white, $fontColorWeight);
             &:hover {
                 color: $--color-white;
                 background-color: mix($--tag-success-color, $--color-white, $hoverColorWeight);
             }
+    
+        }
+    }
+
+    &.m-tag--info {
+        background-color: mix($--tag-info-color, $--color-white, $backgroundColorWeight);
+        border-color: mix($--tag-info-color, $--color-white, $borderColorWeight);
+        color: mix($--tag-info-color, $--color-white, $fontColorWeight);
+
+        @include when(hit) {
+            border-color: $--tag-info-color;
+        }
+
+        .m-tag__close {
+            color: mix($--tag-info-color, $--color-white, $fontColorWeight);
+            &:hover {
+                color: $--color-white;
+                background-color: mix($--tag-info-color, $--color-white, $hoverColorWeight);
+            }
+    
         }
     }
 
@@ -58,17 +61,18 @@
         background-color: mix($--tag-warning-color, $--color-white, $backgroundColorWeight);
         border-color: mix($--tag-warning-color, $--color-white, $borderColorWeight);
         color: mix($--tag-warning-color, $--color-white, $fontColorWeight);
-    
+
         @include when(hit) {
             border-color: $--tag-warning-color;
         }
-    
+
         .m-tag__close {
             color: mix($--tag-warning-color, $--color-white, $fontColorWeight);
             &:hover {
                 color: $--color-white;
                 background-color: mix($--tag-warning-color, $--color-white, $hoverColorWeight);
             }
+    
         }
     }
 
@@ -76,35 +80,36 @@
         background-color: mix($--tag-danger-color, $--color-white, $backgroundColorWeight);
         border-color: mix($--tag-danger-color, $--color-white, $borderColorWeight);
         color: mix($--tag-danger-color, $--color-white, $fontColorWeight);
-    
+        
         @include when(hit) {
             border-color: $--tag-danger-color;
         }
-    
+
         .m-tag__close {
             color: mix($--tag-danger-color, $--color-white, $fontColorWeight);
             &:hover {
                 color: $--color-white;
                 background-color: mix($--tag-danger-color, $--color-white, $hoverColorWeight);
             }
+    
         }
     }
 }
 
 @include b(tag) {
-        @include genTheme(10%, 20%, 100%, 100%);
-        display: inline-block;
-        height: 32px;
-        padding: $--tag-padding;
-        line-height: 30px;
-        font-size: $--tag-font-size;
-        color: $--tag-primary-color;
-        border-width: 1px;
-        border-style: solid;
-        border-radius: $--tag-border-radius;
-        box-sizing: border-box;
-        white-space: nowrap;
-  
+    @include genTheme(10%, 20%, 100%, 100%);
+    display: inline-block;
+    height: 32px;
+    line-height: 30px;
+    padding: $--tag-padding;
+    font-size: $--tag-font-size;
+    color: $--tag-primary-color;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: $--tag-border-radius;
+    box-sizing: border-box;
+    white-space: nowrap;
+
     .m-icon-close {
         border-radius: 50%;
         text-align: center;
@@ -117,12 +122,12 @@
         vertical-align: middle;
         top: -1px;
         right: -5px;
-    
+
         &::before {
             display: block;
         }
     }
-  
+
     @include m(dark) {
         @include genTheme(100%, 100%, 0, 80%);
     }
@@ -130,7 +135,7 @@
     @include m(plain) {
         @include genTheme(0, 40%, 100%, 100%);
     }
-  
+
     @include m(medium) {
         height: 28px;
         line-height: 26px;

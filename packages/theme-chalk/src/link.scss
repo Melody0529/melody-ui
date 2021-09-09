@@ -2,11 +2,11 @@
 @import "common/var";
 
 $typeMap: (
-  primary: $--link-primary-font-color, 
-  danger: $--link-danger-font-color, 
-  success: $--link-success-font-color, 
-  warning: $--link-warning-font-color, 
-  info: $--link-info-font-color);
+    primary: $--link-primary-font-color, 
+    danger: $--link-danger-font-color, 
+    success: $--link-success-font-color, 
+    warning: $--link-warning-font-color, 
+    info: $--link-info-font-color);
 
 @include b(link) {
     display: inline-flex;
@@ -43,7 +43,8 @@ $typeMap: (
             margin-left: 5px;
         }
     }
-
+    
+    
     &.m-link--default  {
         color: $--link-default-font-color;
         &:hover {
@@ -66,9 +67,15 @@ $typeMap: (
             &:after {
                 border-color: $primaryColor
             }
-        }
-        @include when(disabled) {
-            color: mix($primaryColor, $--color-white, 50%)
+            @include when(disabled) {
+                color: mix($primaryColor, $--color-white, 50%)
+            }
+            @include when(underline) {
+                &:hover:after {
+                    border-color: $primaryColor
+                }
+            }
         }
     }
+    
 }

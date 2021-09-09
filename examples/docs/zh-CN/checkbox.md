@@ -10,12 +10,14 @@
 <template>
     <!-- `checked` 为 true 或 false -->
     <m-checkbox v-model="checked">备选项</m-checkbox>
+    <m-checkbox :true-label="1" :false-label="0" v-model="value1">备选项</m-checkbox>
 </template>
 <script>
     export default {
         data() {
             return {
-                checked: true
+                checked: true,
+                value1: '0'
             }
         }
     }

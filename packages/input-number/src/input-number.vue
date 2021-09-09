@@ -112,7 +112,6 @@ export default {
                     if (isNaN(newVal)) {
                         return
                     }
-
                     if (this.stepStrictly) {
                         const stepPrecision = this.getPrecision(this.step)
                         const precisionFactor = Math.pow(10, stepPrecision)
@@ -122,12 +121,12 @@ export default {
                     if (this.precision !== undefined) {
                         newVal = this.toPrecision(newVal, this.precision)
                     }
+                    if (newVal >= this.max) newVal = this.max
+                    if (newVal <= this.min) newVal = this.min
+                    this.currentValue = newVal
+                    this.userInput = null
+                    this.$emit('input', newVal)
                 }
-                if (newVal >= this.max) newVal = this.max
-                if (newVal <= this.min) newVal = this.min
-                this.currentValue = newVal
-                this.userInput = null
-                this.$emit('input', newVal)
             }
         }
     },
@@ -195,23 +194,18 @@ export default {
         },
         _increase(val, step) {
             if (typeof val !== 'number' && val !== undefined) return this.currentValue
-
             const precisionFactor = Math.pow(10, this.numPrecision)
-            // Solve the accuracy problem of JS decimal calculation by converting the value to integer.
             return this.toPrecision((precisionFactor * val + precisionFactor * step) / precisionFactor)
         },
         _decrease(val, step) {
             if (typeof val !== 'number' && val !== undefined) return this.currentValue
-
             const precisionFactor = Math.pow(10, this.numPrecision)
-
             return this.toPrecision((precisionFactor * val - precisionFactor * step) / precisionFactor)
         },
         increase() {
             if (this.inputNumberDisabled || this.maxDisabled) return
             const value = this.value || 0
             const newVal = this._increase(value, this.step)
-            console.log(value, newVal)
             this.setCurrentValue(newVal)
         },
         decrease() {
@@ -248,11 +242,7 @@ export default {
                 this.setCurrentValue(newVal)
             }
             this.userInput = null
-        },
-        select() {
-            this.$refs.input.select()
         }
-
     },
     mounted() {
         let innerInput = this.$refs.input.$refs.input

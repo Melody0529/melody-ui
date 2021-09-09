@@ -4,15 +4,15 @@
 @import "mixins/utils";
 
 @include b(radio) {
-    color: $--radio-font-color;
-    font-weight: $--radio-font-weight;
-    line-height: 1;
     position: relative;
+    font-size: $--radio-font-size;
+    font-weight: $--radio-font-weight;
+    color: $--radio-font-color;
     cursor: pointer;
-    display: inline-block;
-    white-space: nowrap;
     outline: none;
-    font-size: $--font-size-base;
+    display: inline-block;
+    line-height: 1;
+    white-space: nowrap;
     margin-right: 30px;
     @include utils-user-select(none);
 
@@ -22,7 +22,7 @@
         border: $--border-base;
         box-sizing: border-box;
         height: $--radio-bordered-height;
-
+        
         &.is-checked {
             border-color: $--color-primary;
         }
@@ -43,7 +43,7 @@
             border-radius: $--button-medium-border-radius;
             height: $--radio-bordered-medium-height;
             .m-radio__label {
-                font-size: $--button-medium-font-size;
+                font-size:  $--button-medium-font-size;
             }
             .m-radio__inner {
                 height: $--radio-bordered-medium-input-height;
@@ -58,7 +58,7 @@
             border-radius: $--button-small-border-radius;
             height: $--radio-bordered-small-height;
             .m-radio__label {
-                font-size: $--button-small-font-size;
+                font-size:  $--button-small-font-size;
             }
             .m-radio__inner {
                 height: $--radio-bordered-small-input-height;
@@ -73,7 +73,7 @@
             border-radius: $--button-mini-border-radius;
             height: $--radio-bordered-mini-height;
             .m-radio__label {
-                font-size: $--button-mini-font-size;
+                font-size:  $--button-mini-font-size;
             }
             .m-radio__inner {
                 height: $--radio-bordered-mini-input-height;
@@ -82,9 +82,6 @@
         }
     }
 
-    &:last-child {
-        margin-right: 0;
-    }
     @include e(input) {
         white-space: nowrap;
         cursor: pointer;
@@ -96,9 +93,9 @@
 
         @include when(disabled) {
             .m-radio__inner {
+                cursor: not-allowed;
                 border-color: $--radio-disabled-input-border-color;
                 background: $--radio-disabled-input-fill;
-                cursor: not-allowed;
             }
 
             &::after {
@@ -109,7 +106,7 @@
             & + .m-radio__label {
                 cursor: not-allowed;
             }
-            
+
             &.is-checked {
                 .m-radio__inner {
                     background: $--radio-disabled-checked-input-fill;
@@ -120,11 +117,11 @@
                     }
                 }
             }
+
             & + span.m-radio__label {
                 cursor: not-allowed;
                 color: $--color-text-placeholder;
             }
-
         }
 
         @include when(checked) {
@@ -150,20 +147,20 @@
     }
 
     @include e(inner) {
-        border: $--radio-input-border;
-        border-radius: $--radio-input-border-radius;
-        width: $--radio-input-width;
-        height: $--radio-input-height;
-        background-color: $--radio-input-background-color;
         position: relative;
         cursor: pointer;
         display: inline-block;
         box-sizing: border-box;
-    
+        width: $--radio-input-width;
+        height: $--radio-input-height;
+        border-radius: $--radio-input-border-radius;
+        background-color: $--radio-input-background-color;
+        border: $--radio-input-border;
+
         &:hover {
             border-color: $--radio-input-border-color-hover;
         }
-    
+
         &::after {
             width: 4px;
             height: 4px;
@@ -176,7 +173,6 @@
             transform: translate(-50%, -50%) scale(0);
             transition: transform .15s ease-in;
         }
-
     }
 
     @include e(original) {
@@ -201,4 +197,4 @@
         font-size: $--radio-font-size;
         padding-left: 10px;
     }
-} 
+}

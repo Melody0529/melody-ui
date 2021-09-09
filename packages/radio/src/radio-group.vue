@@ -46,7 +46,7 @@ export default {
         const radios = this.$el.querySelectorAll('[type=radio]')
         const firstLabel = this.$el.querySelectorAll('[role=radio]')[0]
         if (![].some.call(radios, radio => radio.checked) && firstLabel) {
-            firstLabel.tabIndex = 0;
+            firstLabel.tabIndex = 0
         }
     },
     methods: {
@@ -58,33 +58,33 @@ export default {
             const index = [].indexOf.call(radios, target)
             const roleRadios = this.$el.querySelectorAll('[role=radio]')
             switch (e.keyCode) {
-                case keyCode.LEFT:
-                case keyCode.UP:
+            case keyCode.LEFT:
+            case keyCode.UP:
+                e.stopPropagation()
+                e.preventDefault()
+                if (index === 0) {
+                    roleRadios[length - 1].click()
+                    roleRadios[length - 1].focus()
+                } else {
+                    roleRadios[index - 1].click()
+                    roleRadios[index - 1].focus()
+                }
+                break
+            case keyCode.RIGHT:
+            case keyCode.DOWN:
+                if (index === (length - 1)) {
                     e.stopPropagation()
                     e.preventDefault()
-                    if (index === 0) {
-                        roleRadios[length - 1].click()
-                        roleRadios[length - 1].focus()
-                    } else {
-                        roleRadios[index - 1].click()
-                        roleRadios[index - 1].focus()
-                    }
-                    break
-                case keyCode.RIGHT:
-                case keyCode.DOWN:
-                    if (index === (length - 1)) {
-                        e.stopPropagation()
-                        e.preventDefault()
-                        roleRadios[0].click()
-                        roleRadios[0].focus()
-                    } else {
-                        roleRadios[index + 1].click()
-                        roleRadios[index + 1].focus()
-                    }
-                    break
-                default:
-                    break
-             }
+                    roleRadios[0].click()
+                    roleRadios[0].focus()
+                } else {
+                    roleRadios[index + 1].click()
+                    roleRadios[index + 1].focus()
+                }
+                break
+            default:
+                break
+            }
         }
     },
     watch: {

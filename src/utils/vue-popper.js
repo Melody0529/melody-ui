@@ -67,7 +67,6 @@ export default {
         },
         showPopper: {
             handler(val) {
-                console.log(this.disabled)
                 if (this.disabled) return
                 val ? this.updatePopper() : this.destroyPopper()
                 this.$emit('input', val)
@@ -116,7 +115,6 @@ export default {
         },
 
         updatePopper() {
-            console.log('----------this.popperJS-------------')
             const popperJS = this.popperJS
             if (popperJS) {
                 popperJS.update()
@@ -136,7 +134,6 @@ export default {
         },
 
         destroyPopper() {
-            console.log('111111111111')
             if (this.popperJS) {
                 this.resetTransformOrigin()
             }
