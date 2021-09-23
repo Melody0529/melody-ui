@@ -222,8 +222,9 @@ export default {
             this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows)
         },
         handleInput(event) {
+            console.log(event)
             // should not emit input during composition
-        // see: https://github.com/ElemeFE/element/issues/10516
+            // see: https://github.com/ElemeFE/element/issues/10516
             if (this.isComposing) return
 
             // hack for https://github.com/ElemeFE/element/issues/8548
@@ -237,6 +238,7 @@ export default {
             this.$nextTick(this.setNativeInputValue)
         },
         handleChange(event) {
+            console.log(event)
             this.$emit('change', event.target.value)
         },
         handleBlur(event) {
