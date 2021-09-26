@@ -142,6 +142,22 @@
     content: "\e85d";
 }
 
+.m-icon-warning:before {
+    content: "\e8af";
+}
+
+.m-icon-plus:before {
+    content: "\e9a9";
+}
+
+.m-icon-minus:before {
+    content: "\e88c";
+}
+
+.m-icon-document:before {
+    content: "\e7ed";
+}
+
 .m-icon-loading {
     animation: rotating 2s linear infinite;
 }

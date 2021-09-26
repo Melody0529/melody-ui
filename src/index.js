@@ -32,6 +32,9 @@ import DatePicker from '../packages/date-picker/index.js'
 import TimeSelect from '../packages/time-select/index.js'
 import TimePicker from '../packages/time-picker/index.js'
 import Rate from '../packages/rate/index.js'
+import Upload from '../packages/upload/index.js'
+import Progress from '../packages/progress/index.js'
+import ColorPicker from '../packages/color-picker/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -66,7 +69,10 @@ const components = [
     DatePicker,
     TimeSelect,
     TimePicker,
-    Rate
+    Rate,
+    Upload,
+    Progress,
+    ColorPicker
 ]
 
 const install = function (Vue, opts = {}) {
@@ -117,5 +123,8 @@ export default {
     DatePicker,
     TimeSelect,
     TimePicker,
-    Rate
+    Rate,
+    Upload,
+    Progress,
+    ColorPicker
 }

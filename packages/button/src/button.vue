@@ -7,7 +7,7 @@
         :type="nativeType"
         :class="[
             type ? 'm-button--' + type : '',
-            buttonSize ? 'el-button--' + buttonSize : '',
+            buttonSize ? 'm-button--' + buttonSize : '',
             {
                 'is-disabled': buttonDisabled,
                 'is-loading': loading,
