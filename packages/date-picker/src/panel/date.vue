@@ -254,6 +254,10 @@ export default {
             this.userInputTime = null
         },
 
+        // resetDate() {
+        //   this.date = new Date(this.date);
+        // },
+
         showMonthPicker() {
             this.currentView = 'month'
         },
@@ -261,6 +265,15 @@ export default {
         showYearPicker() {
             this.currentView = 'year'
         },
+
+        // XXX: 没用到
+        // handleLabelClick() {
+        //   if (this.currentView === 'date') {
+        //     this.showMonthPicker();
+        //   } else if (this.currentView === 'month') {
+        //     this.showYearPicker();
+        //   }
+        // },
 
         prevMonth() {
             this.date = prevMonth(this.date)
@@ -484,7 +497,6 @@ export default {
                 ? timeWithinRange(date, this.selectableRange, this.format || 'HH:mm:ss')
                 : true
         }
-
     },
 
     components: {
@@ -555,6 +567,13 @@ export default {
 
         yearLabel() {
             const yearTranslation = this.t('el.datepicker.year')
+            if (this.currentView === 'year') {
+                const startYear = Math.floor(this.year / 10) * 10
+                if (yearTranslation) {
+                    return startYear + ' ' + yearTranslation + ' - ' + (startYear + 9) + ' ' + yearTranslation
+                }
+                return startYear + ' - ' + (startYear + 9)
+            }
             return this.year + ' ' + yearTranslation
         },
 

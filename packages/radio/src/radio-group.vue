@@ -7,9 +7,9 @@
         <slot></slot>
     </component>
 </template>
-
 <script>
 import Emitter from 'melody-ui/src/mixins/emitter'
+
 const keyCode = Object.freeze({
     LEFT: 37,
     UP: 38,
@@ -18,24 +18,37 @@ const keyCode = Object.freeze({
 })
 export default {
     name: 'MRadioGroup',
+
     componentName: 'MRadioGroup',
+
+    inject: {
+        mFormItem: {
+            default: ''
+        }
+    },
+
     mixins: [ Emitter ],
+
     props: {
         value: '',
         size: String,
         disabled: Boolean,
         textColor: String,
         fill: String
-
     },
+
     computed: {
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
         _mTag() {
             return (this.$vnode.data || {}).tag || 'div'
         },
         radioGroupSize() {
-            return this.size
+            return this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
         }
     },
+
     created() {
         this.$on('handleChange', value => {
             this.$emit('change', value)
@@ -89,7 +102,7 @@ export default {
     },
     watch: {
         value(value) {
-            console.log(value)
+            this.dispatch('MFormItem', 'el.form.change', [this.value])
         }
     }
 }

@@ -1,5 +1,6 @@
 export default {
     name: 'MCol',
+
     props: {
         span: {
             type: Number,
@@ -10,19 +11,20 @@ export default {
             default: 'div'
         },
         offset: Number,
-        push: Number,
         pull: Number,
+        push: Number,
         xs: [Number, Object],
         sm: [Number, Object],
         md: [Number, Object],
         lg: [Number, Object],
         xl: [Number, Object]
     },
+
     computed: {
         gutter() {
             let parent = this.$parent
             while (parent && parent.$options.componentName !== 'MRow') {
-                parent = parent.$options
+                parent = parent.$parent
             }
             return parent ? parent.gutter : 0
         }
@@ -30,10 +32,12 @@ export default {
     render(h) {
         let classList = []
         let style = {}
+
         if (this.gutter) {
             style.paddingLeft = this.gutter / 2 + 'px'
             style.paddingRight = style.paddingLeft
         }
+
         ;['span', 'offset', 'pull', 'push'].forEach((prop) => {
             if (this[prop] || this[prop] === 0) {
                 classList.push(prop !== 'span' ? `m-col-${prop}-${this[prop]}` : `m-col-${this[prop]}`)
@@ -49,6 +53,7 @@ export default {
                 })
             }
         })
+
         return h(
             this.tag,
             {

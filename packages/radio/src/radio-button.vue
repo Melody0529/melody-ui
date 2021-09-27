@@ -32,13 +32,23 @@
         </span>
     </label>
 </template>
-
 <script>
 import Emitter from 'melody-ui/src/mixins/emitter'
 
 export default {
     name: 'MRadioButton',
+
     mixins: [ Emitter ],
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+        mFormItem: {
+            default: ''
+        }
+    },
+
     props: {
         label: {},
         disabled: Boolean,
@@ -77,16 +87,20 @@ export default {
                 color: this._radioGroup.textColor || ''
             }
         },
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
         size() {
-            return this._radioGroup.radioGroupSize
+            return this._radioGroup.radioGroupSize || this._mFormItemSize || (this.$ELEMENT || {}).size
         },
         isDisabled() {
-            return this.disabled || this._radioGroup.disabled
+            return this.disabled || this._radioGroup.disabled || (this.mForm || {}).disabled
         },
         tabIndex() {
             return (this.isDisabled || (this._radioGroup && this.value !== this.label)) ? -1 : 0
         }
     },
+
     methods: {
         handleChange() {
             this.$nextTick(() => {

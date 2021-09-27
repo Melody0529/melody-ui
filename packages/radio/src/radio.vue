@@ -45,8 +45,21 @@ import Emitter from 'melody-ui/src/mixins/emitter'
 
 export default {
     name: 'MRadio',
+
     mixins: [Emitter],
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+
+        mFormItem: {
+            default: ''
+        }
+    },
+
     componentName: 'MRadio',
+
     props: {
         value: {},
         label: {},
@@ -55,6 +68,7 @@ export default {
         border: Boolean,
         size: String
     },
+
     data() {
         return {
             focus: false
@@ -67,23 +81,11 @@ export default {
                 if (parent.$options.componentName !== 'MRadioGroup') {
                     parent = parent.$parent
                 } else {
-                    // eslint-disable-next-line vue/no-side-effects-in-computed-properties
                     this._radioGroup = parent
                     return true
                 }
             }
             return false
-        },
-        radioSize() {
-            const temRadioSize = this.size
-            return this.isGroup
-                ? this._radioGroup.radioGroupSize || temRadioSize
-                : temRadioSize
-        },
-        isDisabled() {
-            return this.isGroup
-                ? this._radioGroup.disabled || this.disabled
-                : this.disabled
         },
         model: {
             get() {
@@ -95,12 +97,28 @@ export default {
                 } else {
                     this.$emit('input', val)
                 }
+                this.$refs.radio && (this.$refs.radio.checked = this.model === this.label)
             }
+        },
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
+        radioSize() {
+            const temRadioSize = this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
+            return this.isGroup
+                ? this._radioGroup.radioGroupSize || temRadioSize
+                : temRadioSize
+        },
+        isDisabled() {
+            return this.isGroup
+                ? this._radioGroup.disabled || this.disabled || (this.mForm || {}).disabled
+                : this.disabled || (this.mForm || {}).disabled
         },
         tabIndex() {
             return (this.isDisabled || (this.isGroup && this.model !== this.label)) ? -1 : 0
         }
     },
+
     methods: {
         handleChange() {
             this.$nextTick(() => {

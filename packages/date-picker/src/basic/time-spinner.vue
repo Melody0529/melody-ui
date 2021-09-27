@@ -177,7 +177,6 @@ export default {
 
     mounted() {
         this.$nextTick(() => {
-            console.log(this.arrowControl)
             !this.arrowControl && this.bindScrollEvent()
         })
     },

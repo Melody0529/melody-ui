@@ -4,12 +4,20 @@
         inputSize ? 'm-input--' + inputSize : '',
         {
             'is-disabled': inputDisabled,
-            'm-input--prefix': $slots.prefix || prefixIcon ,
+            'is-exceed': inputExceed,
+            'm-input-group': $slots.prepend || $slots.append,
+            'm-input-group--append': $slots.append,
+            'm-input-group--prepend': $slots.prepend,
+            'm-input--prefix': $slots.prefix || prefixIcon,
             'm-input--suffix': $slots.suffix || suffixIcon || clearable || showPassword
         }]"
         @mouseenter="hovering = true"
         @mouseleave="hovering = false">
         <template v-if="type!=='textarea'">
+            <!-- 前置元素 -->
+            <div class="m-input-group__prepend" v-if="$slots.prepend">
+                <slot name="prepend"></slot>
+            </div>
             <input
                 :tabindex="tabindex"
                 v-if="type!=='textarea'"
@@ -41,7 +49,7 @@
                 class="m-input__suffix"
                 v-if="getSuffixVisible()">
                 <span class="m-input__suffix-inner">
-                    <template v-if="!showClear || !showPwdVisible">
+                    <template v-if="!showClear || !showPwdVisible || !isWordLimitVisible">
                         <slot name="suffix"></slot>
                         <i class="m-input__icon"
                             v-if="suffixIcon"
@@ -57,11 +65,23 @@
                     <i
                         v-if="showPwdVisible"
                         class="m-input__icon m-icon-eye m-input__clear"
-                        @mousedown.prevent
                         @click="handlePasswordVisible">
                     </i>
+                    <span v-if="isWordLimitVisible" class="m-input__count">
+                        <span class="m-input__count-inner">
+                            {{ textLength }}/{{ upperLimit }}
+                        </span>
+                    </span>
                 </span>
+                <i class="m-input__icon"
+                    v-if="validateState"
+                    :class="['m-input__validateIcon', validateIcon]">
+                </i>
             </span>
+            <!-- 后置元素 -->
+            <div class="m-input-group__append" v-if="$slots.append">
+                <slot name="append"></slot>
+            </div>
         </template>
         <textarea
             v-else
@@ -81,16 +101,45 @@
             @blur="handleBlur"
             @change="handleChange"
             :aria-label="label">
-    </textarea>
+        </textarea>
+        <span v-if="isWordLimitVisible && type === 'textarea'" class="m-input__count">{{ textLength }}/{{ upperLimit }}</span>
     </div>
 </template>
-
 <script>
+import emitter from 'melody-ui/src/mixins/emitter'
+import Migrating from 'melody-ui/src/mixins/migrating'
 import calcTextareaHeight from './calcTextareaHeight'
 import merge from 'melody-ui/src/utils/merge'
+import {isKorean} from 'melody-ui/src/utils/shared'
+
 export default {
     name: 'MInput',
+
     componentName: 'MInput',
+
+    mixins: [emitter, Migrating],
+
+    inheritAttrs: false,
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+        mFormItem: {
+            default: ''
+        }
+    },
+
+    data() {
+        return {
+            textareaCalcStyle: {},
+            hovering: false,
+            focused: false,
+            isComposing: false,
+            passwordVisible: false
+        }
+    },
+
     props: {
         value: [String, Number],
         size: String,
@@ -140,35 +189,99 @@ export default {
         },
         tabindex: String
     },
-    data() {
-        return {
-            textareaCalcStyle: {},
-            hovering: false,
-            focused: false,
-            isComposing: false,
-            passwordVisible: false
-        }
-    },
+
     computed: {
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
+        validateState() {
+            return this.mFormItem ? this.mFormItem.validateState : ''
+        },
+        needStatusIcon() {
+            return this.mForm ? this.mForm.statusIcon : false
+        },
+        validateIcon() {
+            return {
+                validating: 'm-icon-loading',
+                success: 'm-icon-check-circle',
+                error: 'm-icon-close-circle'
+            }[this.validateState]
+        },
+        textareaStyle() {
+            return merge({}, this.textareaCalcStyle, { resize: this.resize })
+        },
         inputSize() {
-            return this.size
+            return this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
         },
         inputDisabled() {
-            return this.disabled
+            return this.disabled || (this.mForm || {}).disabled
         },
         nativeInputValue() {
             return this.value === null || this.value === undefined ? '' : String(this.value)
         },
         showClear() {
-            return this.clearable && this.nativeInputValue && (this.focused || this.hovering)
+            return this.clearable &&
+          !this.inputDisabled &&
+          !this.readonly &&
+          this.nativeInputValue &&
+          (this.focused || this.hovering)
         },
         showPwdVisible() {
-            return this.showPassword && (!!this.nativeInputValue || this.focused)
+            return this.showPassword &&
+          !this.inputDisabled &&
+          !this.readonly &&
+          (!!this.nativeInputValue || this.focused)
         },
-        textareaStyle() {
-            return merge({}, this.textareaCalcStyle, { resize: this.resize })
+        isWordLimitVisible() {
+            return this.showWordLimit &&
+          this.$attrs.maxlength &&
+          (this.type === 'text' || this.type === 'textarea') &&
+          !this.inputDisabled &&
+          !this.readonly &&
+          !this.showPassword
+        },
+        upperLimit() {
+            return this.$attrs.maxlength
+        },
+        textLength() {
+            if (typeof this.value === 'number') {
+                return String(this.value).length
+            }
+
+            return (this.value || '').length
+        },
+        inputExceed() {
+        // show exceed style if length of initial value greater then maxlength
+            return this.isWordLimitVisible &&
+          (this.textLength > this.upperLimit)
         }
     },
+
+    watch: {
+        value(val) {
+            this.$nextTick(this.resizeTextarea)
+            if (this.validateEvent) {
+                this.dispatch('MFormItem', 'el.form.change', [val])
+            }
+        },
+        // native input value is set explicitly
+        // do not use v-model / :value in template
+        // see: https://github.com/ElemeFE/element/issues/14521
+        nativeInputValue() {
+            this.setNativeInputValue()
+        },
+        // when change between <input> and <textarea>,
+        // update DOM dependent value and styles
+        // https://github.com/ElemeFE/element/issues/14857
+        type() {
+            this.$nextTick(() => {
+                this.setNativeInputValue()
+                this.resizeTextarea()
+                this.updateIconOffset()
+            })
+        }
+    },
+
     methods: {
         focus() {
             this.getInput().focus()
@@ -176,35 +289,26 @@ export default {
         blur() {
             this.getInput().blur()
         },
+        getMigratingConfig() {
+            return {
+                props: {
+                    'icon': 'icon is removed, use suffix-icon / prefix-icon instead.',
+                    'on-icon-click': 'on-icon-click is removed.'
+                },
+                events: {
+                    'click': 'click is removed.'
+                }
+            }
+        },
+        handleBlur(event) {
+            this.focused = false
+            this.$emit('blur', event)
+            if (this.validateEvent) {
+                this.dispatch('MFormItem', 'el.form.blur', [this.value])
+            }
+        },
         select() {
             this.getInput().select()
-        },
-        getInput() {
-            return this.$refs.input || this.$refs.textarea
-        },
-        handlePasswordVisible() {
-            this.passwordVisible = !this.passwordVisible
-            this.focus()
-        },
-        handleCompositionStart() {
-            // this.isComposing = true
-        },
-        handleCompositionUpdate(event) {
-            // const text = event.target.value
-            // const lastCharacter = text[text.length - 1] || ''
-            // this.isComposing = !isKorean(lastCharacter)
-        },
-        handleCompositionEnd(event) {
-            // if (this.isComposing) {
-            //     this.isComposing = false
-            //     this.handleInput(event)
-            // }
-        },
-        setNativeInputValue() {
-            const input = this.getInput()
-            if (!input) return
-            if (input.value === this.nativeInputValue) return
-            input.value = this.nativeInputValue
         },
         resizeTextarea() {
             if (this.$isServer) return
@@ -221,8 +325,31 @@ export default {
 
             this.textareaCalcStyle = calcTextareaHeight(this.$refs.textarea, minRows, maxRows)
         },
+        setNativeInputValue() {
+            const input = this.getInput()
+            if (!input) return
+            if (input.value === this.nativeInputValue) return
+            input.value = this.nativeInputValue
+        },
+        handleFocus(event) {
+            this.focused = true
+            this.$emit('focus', event)
+        },
+        handleCompositionStart() {
+            this.isComposing = true
+        },
+        handleCompositionUpdate(event) {
+            const text = event.target.value
+            const lastCharacter = text[text.length - 1] || ''
+            this.isComposing = !isKorean(lastCharacter)
+        },
+        handleCompositionEnd(event) {
+            if (this.isComposing) {
+                this.isComposing = false
+                this.handleInput(event)
+            }
+        },
         handleInput(event) {
-            console.log(event)
             // should not emit input during composition
             // see: https://github.com/ElemeFE/element/issues/10516
             if (this.isComposing) return
@@ -238,49 +365,69 @@ export default {
             this.$nextTick(this.setNativeInputValue)
         },
         handleChange(event) {
-            console.log(event)
             this.$emit('change', event.target.value)
         },
-        handleBlur(event) {
-            this.focused = false
-            this.$emit('blur', event)
+        calcIconOffset(place) {
+            let elList = [].slice.call(this.$el.querySelectorAll(`.m-input__${place}`) || [])
+            if (!elList.length) return
+            let el = null
+            for (let i = 0; i < elList.length; i++) {
+                if (elList[i].parentNode === this.$el) {
+                    el = elList[i]
+                    break
+                }
+            }
+            if (!el) return
+            const pendantMap = {
+                suffix: 'append',
+                prefix: 'prepend'
+            }
+
+            const pendant = pendantMap[place]
+            if (this.$slots[pendant]) {
+                el.style.transform = `translateX(${place === 'suffix' ? '-' : ''}${this.$el.querySelector(`.m-input-group__${pendant}`).offsetWidth}px)`
+            } else {
+                el.removeAttribute('style')
+            }
         },
-        handleFocus(event) {
-            this.focused = true
-            this.$emit('focus', event)
+        updateIconOffset() {
+            this.calcIconOffset('prefix')
+            this.calcIconOffset('suffix')
         },
         clear() {
             this.$emit('input', '')
             this.$emit('change', '')
             this.$emit('clear')
         },
+        handlePasswordVisible() {
+            this.passwordVisible = !this.passwordVisible
+            this.focus()
+        },
+        getInput() {
+            return this.$refs.input || this.$refs.textarea
+        },
         getSuffixVisible() {
             return this.$slots.suffix ||
-            this.suffixIcon ||
-            this.showClear ||
-            this.showPassword
+          this.suffixIcon ||
+          this.showClear ||
+          this.showPassword ||
+          this.isWordLimitVisible ||
+          (this.validateState && this.needStatusIcon)
         }
     },
-    watch: {
-        value(val) {
-            this.$nextTick(this.resizeTextarea)
-        },
-        nativeInputValue() {
-            this.setNativeInputValue()
-        },
-        type() {
-            this.$nextTick(() => {
-                this.setNativeInputValue()
-                this.resizeTextarea()
-            })
-        }
-    },
+
     created() {
         this.$on('inputSelect', this.select)
     },
+
     mounted() {
         this.setNativeInputValue()
         this.resizeTextarea()
+        this.updateIconOffset()
+    },
+
+    updated() {
+        this.$nextTick(this.updateIconOffset)
     }
 }
 </script>

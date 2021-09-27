@@ -22,10 +22,19 @@
         <span v-if="$slots.default"><slot></slot></span>
     </button>
 </template>
-
 <script>
 export default {
     name: 'MButton',
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+        mFormItem: {
+            default: ''
+        }
+    },
+
     props: {
         type: {
             type: String,
@@ -47,14 +56,19 @@ export default {
         round: Boolean,
         circle: Boolean
     },
+
     computed: {
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
         buttonSize() {
-            return this.size
+            return this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
         },
         buttonDisabled() {
-            return this.disabled
+            return this.disabled || (this.mForm || {}).disabled
         }
     },
+
     methods: {
         handleClick(evt) {
             this.$emit('click', evt)

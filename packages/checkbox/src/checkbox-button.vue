@@ -39,14 +39,26 @@
             :style="isChecked ? activeStyle : null">
             <slot>{{label}}</slot>
         </span>
+
     </label>
 </template>
 <script>
 import Emitter from 'melody-ui/src/mixins/emitter'
+
 export default {
     name: 'MCheckboxButton',
-    componentName: 'MCheckboxButton',
+
     mixins: [Emitter],
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+        mFormItem: {
+            default: ''
+        }
+    },
+
     data() {
         return {
             selfModel: false,
@@ -54,6 +66,7 @@ export default {
             isLimitExceeded: false
         }
     },
+
     props: {
         value: {},
         label: {},
@@ -66,20 +79,24 @@ export default {
     computed: {
         model: {
             get() {
-                return this._checkboxGroup ? this.store : this.value !== undefined ? this.value : this.selfModel
+                return this._checkboxGroup
+                    ? this.store : this.value !== undefined
+                        ? this.value : this.selfModel
             },
+
             set(val) {
                 if (this._checkboxGroup) {
-                    this.isLimitExceeded = false
-                    if (this._checkboxGroup.min !== undefined && val.length < this._checkboxGroup.min) {
-                        this.isLimitExceeded = true
-                    }
-                    if (this._checkboxGroup.max !== undefined && val.length > this._checkboxGroup.max) {
-                        this.isLimitExceeded = true
-                    }
+                    this.isLimitExceeded = false;
+                    (this._checkboxGroup.min !== undefined &&
+              val.length < this._checkboxGroup.min &&
+              (this.isLimitExceeded = true));
+
+                    (this._checkboxGroup.max !== undefined &&
+              val.length > this._checkboxGroup.max &&
+              (this.isLimitExceeded = true))
 
                     this.isLimitExceeded === false &&
-                    this.dispatch('MCheckboxGroup', 'input', [val])
+            this.dispatch('MCheckboxGroup', 'input', [val])
                 } else if (this.value !== undefined) {
                     this.$emit('input', val)
                 } else {
@@ -87,6 +104,7 @@ export default {
                 }
             }
         },
+
         isChecked() {
             if ({}.toString.call(this.model) === '[object Boolean]') {
                 return this.model
@@ -96,10 +114,11 @@ export default {
                 return this.model === this.trueLabel
             }
         },
+
         _checkboxGroup() {
             let parent = this.$parent
             while (parent) {
-                if (parent.$options.componentName != 'MCheckboxGroup') {
+                if (parent.$options.componentName !== 'MCheckboxGroup') {
                     parent = parent.$parent
                 } else {
                     return parent
@@ -107,9 +126,11 @@ export default {
             }
             return false
         },
+
         store() {
             return this._checkboxGroup ? this._checkboxGroup.value : this.value
         },
+
         activeStyle() {
             return {
                 backgroundColor: this._checkboxGroup.fill || '',
@@ -119,25 +140,35 @@ export default {
 
             }
         },
+
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
+
+        size() {
+            return this._checkboxGroup.checkboxGroupSize || this._mFormItemSize || (this.$ELEMENT || {}).size
+        },
+
+        /* used to make the isDisabled judgment under max/min props */
         isLimitDisabled() {
             const { max, min } = this._checkboxGroup
             return !!(max || min) &&
-                (this.model.length >= max && !this.isChecked) ||
-                (this.model.length <= min && this.isChecked)
+          (this.model.length >= max && !this.isChecked) ||
+          (this.model.length <= min && this.isChecked)
         },
+
         isDisabled() {
             return this._checkboxGroup
-                ? this._checkboxGroup.disabled || this.disabled || this.isLimitDisabled
-                : this.disabled
-        },
-        size() {
-            return this._checkboxGroup.checkboxGroupSize
+                ? this._checkboxGroup.disabled || this.disabled || (this.mForm || {}).disabled || this.isLimitDisabled
+                : this.disabled || (this.mForm || {}).disabled
         }
-
     },
     methods: {
         addToStore() {
-            if (Array.isArray(this.model) && this.model.indexOf(this.label) === -1) {
+            if (
+                Array.isArray(this.model) &&
+          this.model.indexOf(this.label) === -1
+            ) {
                 this.model.push(this.label)
             } else {
                 this.model = this.trueLabel || true
@@ -158,8 +189,8 @@ export default {
                 }
             })
         }
-
     },
+
     created() {
         this.checked && this.addToStore()
     }

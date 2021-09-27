@@ -18,11 +18,16 @@
 <script type="text/babel">
 import Emitter from 'melody-ui/src/mixins/emitter'
 import { getValueByPath, escapeRegexpString } from 'melody-ui/src/utils/util'
+
 export default {
     mixins: [Emitter],
+
     name: 'MOption',
+
     componentName: 'MOption',
+
     inject: ['select'],
+
     props: {
         value: {
             required: true
@@ -34,6 +39,7 @@ export default {
             default: false
         }
     },
+
     data() {
         return {
             index: -1,
@@ -43,16 +49,20 @@ export default {
             hover: false
         }
     },
+
     computed: {
         isObject() {
             return Object.prototype.toString.call(this.value).toLowerCase() === '[object object]'
         },
+
         currentLabel() {
             return this.label || (this.isObject ? '' : this.value)
         },
+
         currentValue() {
             return this.value || this.label || ''
         },
+
         itemSelected() {
             if (!this.select.multiple) {
                 return this.isEqual(this.value, this.select.value)
@@ -60,6 +70,7 @@ export default {
                 return this.contains(this.select.value, this.value)
             }
         },
+
         limitReached() {
             if (this.select.multiple) {
                 return !this.itemSelected &&
@@ -70,6 +81,7 @@ export default {
             }
         }
     },
+
     watch: {
         currentLabel() {
             if (!this.created && !this.select.remote) this.dispatch('MSelect', 'setSelected')
@@ -84,6 +96,7 @@ export default {
             }
         }
     },
+
     methods: {
         isEqual(a, b) {
             if (!this.isObject) {
@@ -93,6 +106,7 @@ export default {
                 return getValueByPath(a, valueKey) === getValueByPath(b, valueKey)
             }
         },
+
         contains(arr = [], target) {
             if (!this.isObject) {
                 return arr && arr.indexOf(target) > -1
@@ -103,19 +117,23 @@ export default {
                 })
             }
         },
+
         handleGroupDisabled(val) {
             this.groupDisabled = val
         },
+
         hoverItem() {
             if (!this.disabled && !this.groupDisabled) {
                 this.select.hoverIndex = this.select.options.indexOf(this)
             }
         },
+
         selectOptionClick() {
             if (this.disabled !== true && this.groupDisabled !== true) {
                 this.dispatch('MSelect', 'handleOptionClick', [this, true])
             }
         },
+
         queryChange(query) {
             this.visible = new RegExp(escapeRegexpString(query), 'i').test(this.currentLabel) || this.created
             if (!this.visible) {
@@ -123,14 +141,17 @@ export default {
             }
         }
     },
+
     created() {
         this.select.options.push(this)
         this.select.cachedOptions.push(this)
         this.select.optionsCount++
         this.select.filteredOptionsCount++
+
         this.$on('queryChange', this.queryChange)
         this.$on('handleGroupDisabled', this.handleGroupDisabled)
     },
+
     beforeDestroy() {
         const {selected, multiple} = this.select
         let selectedOptions = multiple ? selected : [selected]

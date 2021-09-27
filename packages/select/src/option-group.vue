@@ -14,8 +14,11 @@ import Emitter from 'melody-ui/src/mixins/emitter'
 
 export default {
     mixins: [Emitter],
+
     name: 'MOptionGroup',
+
     componentName: 'MOptionGroup',
+
     props: {
         label: String,
         disabled: {
@@ -23,16 +26,19 @@ export default {
             default: false
         }
     },
+
     data() {
         return {
             visible: true
         }
     },
+
     watch: {
         disabled(val) {
             this.broadcast('MOption', 'handleGroupDisabled', val)
         }
     },
+
     methods: {
         queryChange() {
             this.visible = this.$children &&
@@ -40,9 +46,11 @@ export default {
           this.$children.some(option => option.visible === true)
         }
     },
+
     created() {
         this.$on('queryChange', this.queryChange)
     },
+
     mounted() {
         if (this.disabled) {
             this.broadcast('MOption', 'handleGroupDisabled', this.disabled)

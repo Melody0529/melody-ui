@@ -328,6 +328,7 @@ export default {
             }
             return false
         },
+
         markRange(minDate, maxDate) {
             minDate = getDateTimestamp(minDate)
             maxDate = getDateTimestamp(maxDate) || minDate;
@@ -436,6 +437,5 @@ export default {
             }
         }
     }
-
 }
 </script>

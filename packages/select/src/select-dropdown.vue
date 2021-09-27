@@ -9,17 +9,23 @@
 
 <script type="text/babel">
 import Popper from 'melody-ui/src/utils/vue-popper'
+
 export default {
     name: 'MSelectDropdown',
+
     componentName: 'MSelectDropdown',
+
     mixins: [Popper],
+
     props: {
         placement: {
             default: 'bottom-start'
         },
+
         boundariesPadding: {
             default: 0
         },
+
         popperOptions: {
             default() {
                 return {
@@ -27,29 +33,35 @@ export default {
                 }
             }
         },
+
         visibleArrow: {
             default: true
         },
+
         appendToBody: {
             type: Boolean,
             default: true
         }
     },
+
     data() {
         return {
             minWidth: ''
         }
     },
+
     computed: {
         popperClass() {
             return this.$parent.popperClass
         }
     },
+
     watch: {
         '$parent.inputWidth'() {
             this.minWidth = this.$parent.$el.getBoundingClientRect().width + 'px'
         }
     },
+
     mounted() {
         this.referenceElm = this.$parent.$refs.reference.$el
         this.$parent.popperElm = this.popperElm = this.$el

@@ -333,6 +333,15 @@ const validator = function(val) {
 export default {
     mixins: [Emitter, NewPopper],
 
+    inject: {
+        mForm: {
+            default: ''
+        },
+        mFormItem: {
+            default: ''
+        }
+    },
+
     props: {
         size: String,
         format: String,
@@ -406,11 +415,13 @@ export default {
                 this.hidePicker()
                 this.emitChange(this.value)
                 this.userInput = null
+                if (this.validateEvent) {
+                    this.dispatch('MFormItem', 'el.form.blur')
+                }
                 this.$emit('blur', this)
                 this.blur()
             }
         },
-
         parsedValue: {
             immediate: true,
             handler(val) {
@@ -419,11 +430,15 @@ export default {
                 }
             }
         },
-
         defaultValue(val) {
             // NOTE: should eventually move to jsx style picker + panel ?
             if (this.picker) {
                 this.picker.defaultValue = val
+            }
+        },
+        value(val, oldVal) {
+            if (!valueEquals(val, oldVal) && !this.pickerVisible && this.validateEvent) {
+                this.dispatch('MFormItem', 'el.form.change', val)
             }
         }
     },
@@ -522,12 +537,16 @@ export default {
             return Array.isArray(this.value) ? this.value.map(val => new Date(val)) : new Date(this.value)
         },
 
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
+
         pickerSize() {
-            return this.size
+            return this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
         },
 
         pickerDisabled() {
-            return this.disabled
+            return this.disabled || (this.mForm || {}).disabled
         },
 
         firstInputId() {
@@ -551,7 +570,6 @@ export default {
             if (id) obj.id = id
             return obj
         }
-
     },
 
     created() {
@@ -674,6 +692,7 @@ export default {
                 }
             }
         },
+
         handleClickIcon(event) {
             if (this.readonly || this.pickerDisabled) return
             if (this.showClose) {
@@ -711,7 +730,6 @@ export default {
             if (HAVE_TRIGGER_TYPES.indexOf(type) !== -1 && !this.pickerVisible) {
                 this.pickerVisible = true
             }
-
             this.$emit('focus', this)
         },
 
@@ -727,10 +745,22 @@ export default {
 
             // Tab
             if (keyCode === 9) {
-                this.handleChange()
-                this.pickerVisible = this.picker.visible = false
-                this.blur()
-                event.stopPropagation()
+                if (!this.ranged) {
+                    this.handleChange()
+                    this.pickerVisible = this.picker.visible = false
+                    this.blur()
+                    event.stopPropagation()
+                } else {
+                    // user may change focus between two input
+                    setTimeout(() => {
+                        if (this.refInput.indexOf(document.activeElement) === -1) {
+                            this.pickerVisible = false
+                            this.blur()
+                            event.stopPropagation()
+                        }
+                    }, 0)
+                }
+                return
             }
 
             // Enter
@@ -762,7 +792,6 @@ export default {
             if (HAVE_TRIGGER_TYPES.indexOf(type) !== -1 && !this.pickerVisible) {
                 this.pickerVisible = true
             }
-
             this.$emit('focus', this)
         },
 
@@ -820,12 +849,13 @@ export default {
 
                 for (const option in options) {
                     if (options.hasOwnProperty(option) &&
-                    // 忽略 time-picker 的该配置项
-                        option !== 'selectableRange') {
+              // 忽略 time-picker 的该配置项
+              option !== 'selectableRange') {
                         this.picker[option] = options[option]
                     }
                 }
 
+                // main format must prevail over undocumented pickerOptions.format
                 if (this.format) {
                     this.picker.format = this.format
                 }
@@ -871,6 +901,9 @@ export default {
             if (!valueEquals(val, this.valueOnOpen)) {
                 this.$emit('change', val)
                 this.valueOnOpen = val
+                if (this.validateEvent) {
+                    this.dispatch('MFormItem', 'el.form.change', val)
+                }
             }
         },
 

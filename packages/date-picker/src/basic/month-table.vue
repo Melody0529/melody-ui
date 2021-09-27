@@ -249,6 +249,5 @@ export default {
             return rows
         }
     }
-
 }
 </script>

@@ -36,6 +36,8 @@ import Upload from '../packages/upload/index.js'
 import Progress from '../packages/progress/index.js'
 import ColorPicker from '../packages/color-picker/index.js'
 import Transfer from '../packages/transfer/index.js'
+import Form from '../packages/form/index.js'
+import FormItem from '../packages/form-item/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -74,7 +76,9 @@ const components = [
     Upload,
     Progress,
     ColorPicker,
-    Transfer
+    Transfer,
+    Form,
+    FormItem
 ]
 
 const install = function (Vue, opts = {}) {
@@ -129,5 +133,7 @@ export default {
     Upload,
     Progress,
     ColorPicker,
-    Transfer
+    Transfer,
+    Form,
+    FormItem
 }

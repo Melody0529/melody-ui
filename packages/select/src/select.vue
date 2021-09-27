@@ -41,6 +41,7 @@
                     <span class="m-select__tags-text">{{ item.currentLabel }}</span>
                 </m-tag>
             </transition-group>
+
             <input
                 type="text"
                 class="m-select__input"
@@ -152,28 +153,55 @@ import { isKorean } from 'melody-ui/src/utils/shared'
 
 export default {
     mixins: [Emitter, Locale, Focus('reference'), NavigationMixin],
+
     name: 'MSelect',
+
     componentName: 'MSelect',
+
+    inject: {
+        mForm: {
+            default: ''
+        },
+
+        mFormItem: {
+            default: ''
+        }
+    },
+
     provide() {
         return {
             'select': this
         }
     },
+
     computed: {
+        _mFormItemSize() {
+            return (this.mFormItem || {}).mFormItemSize
+        },
+
         readonly() {
             return !this.filterable || this.multiple || (!isIE() && !isEdge() && !this.visible)
         },
+
         showClose() {
-            let hasValue = this.multiple ? Array.isArray(this.value) && this.value.length > 0 : this.value !== undefined && this.value !== null && this.value !== ''
-            let criteria = this.clearable && !this.selectDisabled && this.inputHovering && hasValue
+            let hasValue = this.multiple
+                ? Array.isArray(this.value) && this.value.length > 0
+                : this.value !== undefined && this.value !== null && this.value !== ''
+            let criteria = this.clearable &&
+          !this.selectDisabled &&
+          this.inputHovering &&
+          hasValue
             return criteria
         },
+
         iconClass() {
             return this.remote && this.filterable ? '' : this.visible ? 'up is-reverse' : 'up'
         },
+
         debounce() {
             return this.remote ? 300 : 0
         },
+
         emptyText() {
             if (this.loading) {
                 return this.loadingText || this.t('el.select.loading')
@@ -188,20 +216,28 @@ export default {
             }
             return null
         },
+
         showNewOption() {
-            let hasExistingOption = this.options.filter((option) => !option.created).some((option) => option.currentLabel === this.query)
+            let hasExistingOption = this.options.filter(option => !option.created)
+                .some(option => option.currentLabel === this.query)
             return this.filterable && this.allowCreate && this.query !== '' && !hasExistingOption
         },
+
         selectSize() {
-            return this.size
+            return this.size || this._mFormItemSize || (this.$ELEMENT || {}).size
         },
+
         selectDisabled() {
-            return this.disabled
+            return this.disabled || (this.mForm || {}).disabled
         },
+
         collapseTagSize() {
-            return ['small', 'mini'].indexOf(this.selectSize) > -1 ? 'mini' : 'small'
+            return ['small', 'mini'].indexOf(this.selectSize) > -1
+                ? 'mini'
+                : 'small'
         }
     },
+
     components: {
         MInput,
         MSelectMenu,
@@ -209,7 +245,9 @@ export default {
         MOption,
         MTag
     },
+
     directives: { Clickoutside },
+
     props: {
         name: String,
         id: String,
@@ -266,6 +304,7 @@ export default {
             default: true
         }
     },
+
     data() {
         return {
             options: [],
@@ -292,15 +331,18 @@ export default {
             isSilentBlur: false
         }
     },
+
     watch: {
         selectDisabled() {
             this.$nextTick(() => {
                 this.resetInputHeight()
             })
         },
+
         placeholder(val) {
             this.currentPlaceholder = this.currentPlaceholder = val
         },
+
         value(val, oldVal) {
             if (this.multiple) {
                 this.resetInputHeight()
@@ -318,7 +360,11 @@ export default {
             if (this.filterable && !this.multiple) {
                 this.inputLength = 20
             }
+            if (!valueEquals(val, oldVal)) {
+                this.dispatch('MFormItem', 'el.form.change', val)
+            }
         },
+
         visible(val) {
             if (!val) {
                 this.broadcast('MSelectDropdown', 'destroyPopper')
@@ -332,13 +378,16 @@ export default {
                 this.menuVisibleOnFocus = false
                 this.resetHoverIndex()
                 this.$nextTick(() => {
-                    if (this.$refs.input && this.$refs.input.value === '' && this.selected.length === 0) {
+                    if (this.$refs.input &&
+              this.$refs.input.value === '' &&
+              this.selected.length === 0) {
                         this.currentPlaceholder = this.cachedPlaceHolder
                     }
                 })
                 if (!this.multiple) {
                     if (this.selected) {
-                        if (this.filterable && this.allowCreate && this.createdSelected && this.createdLabel) {
+                        if (this.filterable && this.allowCreate &&
+                this.createdSelected && this.createdLabel) {
                             this.selectedLabel = this.createdLabel
                         } else {
                             this.selectedLabel = this.selected.currentLabel
@@ -372,6 +421,7 @@ export default {
             }
             this.$emit('visible-change', val)
         },
+
         options() {
             if (this.$isServer) return
             this.$nextTick(() => {
@@ -389,6 +439,7 @@ export default {
             }
         }
     },
+
     methods: {
         handleComposition(event) {
             const text = event.target.value
@@ -402,7 +453,10 @@ export default {
         },
         handleQueryChange(val) {
             if (this.previousQuery === val || this.isOnComposition) return
-            if (this.previousQuery === null && (typeof this.filterMethod === 'function' || typeof this.remoteMethod === 'function')) {
+            if (
+                this.previousQuery === null &&
+          (typeof this.filterMethod === 'function' || typeof this.remoteMethod === 'function')
+            ) {
                 this.previousQuery = val
                 return
             }
@@ -434,6 +488,7 @@ export default {
                 this.checkDefaultFirstOption()
             }
         },
+
         scrollToOption(option) {
             const target = Array.isArray(option) && option[0] ? option[0].$el : option.$el
             if (this.$refs.popper && target) {
@@ -442,14 +497,17 @@ export default {
             }
             this.$refs.scrollbar && this.$refs.scrollbar.handleScroll()
         },
+
         handleMenuEnter() {
             this.$nextTick(() => this.scrollToOption(this.selected))
         },
+
         emitChange(val) {
             if (!valueEquals(this.value, val)) {
                 this.$emit('change', val)
             }
         },
+
         getOption(value) {
             let option
             const isObject = Object.prototype.toString.call(value).toLowerCase() === '[object object]'
@@ -458,14 +516,17 @@ export default {
 
             for (let i = this.cachedOptions.length - 1; i >= 0; i--) {
                 const cachedOption = this.cachedOptions[i]
-                const isEqual = cachedOption.value === value
+                const isEqual = isObject
+                    ? getValueByPath(cachedOption.value, this.valueKey) === getValueByPath(value, this.valueKey)
+                    : cachedOption.value === value
                 if (isEqual) {
                     option = cachedOption
                     break
                 }
             }
             if (option) return option
-            const label = !isObject && !isNull && !isUndefined ? value : ''
+            const label = (!isObject && !isNull && !isUndefined)
+                ? value : ''
             let newOption = {
                 value: value,
                 currentLabel: label
@@ -475,6 +536,7 @@ export default {
             }
             return newOption
         },
+
         setSelected() {
             if (!this.multiple) {
                 let option = this.getOption(this.value)
@@ -500,6 +562,7 @@ export default {
                 this.resetInputHeight()
             })
         },
+
         handleFocus(event) {
             if (!this.softFocus) {
                 if (this.automaticDropdown || this.filterable) {
@@ -513,10 +576,12 @@ export default {
                 this.softFocus = false
             }
         },
+
         blur() {
             this.visible = false
             this.$refs.reference.blur()
         },
+
         handleBlur(event) {
             setTimeout(() => {
                 if (this.isSilentBlur) {
@@ -527,15 +592,19 @@ export default {
             }, 50)
             this.softFocus = false
         },
+
         handleClearClick(event) {
             this.deleteSelected(event)
         },
+
         doDestroy() {
             this.$refs.popper && this.$refs.popper.doDestroy()
         },
+
         handleClose() {
             this.visible = false
         },
+
         toggleLastOptionHitState(hit) {
             if (!Array.isArray(this.selected)) return
             const option = this.selected[this.selected.length - 1]
@@ -549,6 +618,7 @@ export default {
             option.hitState = !option.hitState
             return option.hitState
         },
+
         deletePrevTag(e) {
             if (e.target.value.length <= 0 && !this.toggleLastOptionHitState()) {
                 const value = this.value.slice()
@@ -557,37 +627,39 @@ export default {
                 this.emitChange(value)
             }
         },
+
         managePlaceholder() {
             if (this.currentPlaceholder !== '') {
                 this.currentPlaceholder = this.$refs.input.value ? '' : this.cachedPlaceHolder
             }
         },
+
         resetInputState(e) {
             if (e.keyCode !== 8) this.toggleLastOptionHitState(false)
             this.inputLength = this.$refs.input.value.length * 15 + 20
             this.resetInputHeight()
         },
+
         resetInputHeight() {
             if (this.collapseTags && !this.filterable) return
             this.$nextTick(() => {
-                this.$nextTick(() => {
-                    if (!this.$refs.reference) return
-                    let inputChildNodes = this.$refs.reference.$el.childNodes
-                    let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0]
-                    const tags = this.$refs.tags
-                    const sizeInMap = this.initialInputHeight || 40
-                    input.style.height = this.selected.length === 0
-                        ? sizeInMap + 'px'
-                        : Math.max(
-                            tags ? (tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)) : 0,
-                            sizeInMap
-                        ) + 'px'
-                    if (this.visible && this.emptyText !== false) {
-                        this.broadcast('MSelectDropdown', 'updatePopper')
-                    }
-                })
+                if (!this.$refs.reference) return
+                let inputChildNodes = this.$refs.reference.$el.childNodes
+                let input = [].filter.call(inputChildNodes, item => item.tagName === 'INPUT')[0]
+                const tags = this.$refs.tags
+                const sizeInMap = this.initialInputHeight || 40
+                input.style.height = this.selected.length === 0
+                    ? sizeInMap + 'px'
+                    : Math.max(
+                        tags ? (tags.clientHeight + (tags.clientHeight > sizeInMap ? 6 : 0)) : 0,
+                        sizeInMap
+                    ) + 'px'
+                if (this.visible && this.emptyText !== false) {
+                    this.broadcast('MSelectDropdown', 'updatePopper')
+                }
             })
         },
+
         resetHoverIndex() {
             setTimeout(() => {
                 if (!this.multiple) {
@@ -601,6 +673,7 @@ export default {
                 }
             }, 300)
         },
+
         handleOptionSelect(option, byClick) {
             if (this.multiple) {
                 const value = (this.value || []).slice()
@@ -630,6 +703,7 @@ export default {
                 this.scrollToOption(option)
             })
         },
+
         setSoftFocus() {
             this.softFocus = true
             const input = this.$refs.input || this.$refs.reference
@@ -637,6 +711,7 @@ export default {
                 input.focus()
             }
         },
+
         getValueIndex(arr = [], value) {
             const isObject = Object.prototype.toString.call(value).toLowerCase() === '[object object]'
             if (!isObject) {
@@ -654,6 +729,7 @@ export default {
                 return index
             }
         },
+
         toggleMenu() {
             if (!this.selectDisabled) {
                 if (this.menuVisibleOnFocus) {
@@ -666,6 +742,7 @@ export default {
                 }
             }
         },
+
         selectOption() {
             if (!this.visible) {
                 this.toggleMenu()
@@ -675,6 +752,7 @@ export default {
                 }
             }
         },
+
         deleteSelected(event) {
             event.stopPropagation()
             const value = this.multiple ? [] : ''
@@ -683,6 +761,7 @@ export default {
             this.visible = false
             this.$emit('clear')
         },
+
         deleteTag(event, tag) {
             let index = this.selected.indexOf(tag)
             if (index > -1 && !this.selectDisabled) {
@@ -694,12 +773,14 @@ export default {
             }
             event.stopPropagation()
         },
+
         onInputChange() {
             if (this.filterable && this.query !== this.selectedLabel) {
                 this.query = this.selectedLabel
                 this.handleQueryChange(this.query)
             }
         },
+
         onOptionDestroy(index) {
             if (index > -1) {
                 this.optionsCount--
@@ -707,13 +788,16 @@ export default {
                 this.options.splice(index, 1)
             }
         },
+
         resetInputWidth() {
             this.inputWidth = this.$refs.reference.$el.getBoundingClientRect().width
         },
+
         handleResize() {
             this.resetInputWidth()
             if (this.multiple) this.resetInputHeight()
         },
+
         checkDefaultFirstOption() {
             this.hoverIndex = -1
             // highlight the created option
@@ -743,6 +827,7 @@ export default {
                 }
             }
         },
+
         getValueKey(item) {
             if (Object.prototype.toString.call(item.value).toLowerCase() !== '[object object]') {
                 return item.value
@@ -751,6 +836,7 @@ export default {
             }
         }
     },
+
     created() {
         this.cachedPlaceHolder = this.currentPlaceholder = this.placeholder
         if (this.multiple && !Array.isArray(this.value)) {
@@ -771,11 +857,13 @@ export default {
         this.$on('handleOptionClick', this.handleOptionSelect)
         this.$on('setSelected', this.setSelected)
     },
+
     mounted() {
         if (this.multiple && Array.isArray(this.value) && this.value.length > 0) {
             this.currentPlaceholder = ''
         }
         addResizeListener(this.$el, this.handleResize)
+
         const reference = this.$refs.reference
         if (reference && reference.$el) {
             const sizeMap = {
@@ -786,7 +874,7 @@ export default {
             const input = reference.$el.querySelector('input')
             this.initialInputHeight = input.getBoundingClientRect().height || sizeMap[this.selectSize]
         }
-        if (this.multiple) {
+        if (this.remote && this.multiple) {
             this.resetInputHeight()
         }
         this.$nextTick(() => {
@@ -796,6 +884,7 @@ export default {
         })
         this.setSelected()
     },
+
     beforeDestroy() {
         if (this.$el && this.handleResize) removeResizeListener(this.$el, this.handleResize)
     }

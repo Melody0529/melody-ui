@@ -32,7 +32,6 @@
         </span>
     </div>
 </template>
-
 <script>
 import emitter from 'melody-ui/src/mixins/emitter'
 import Focus from 'melody-ui/src/mixins/focus'
@@ -41,6 +40,11 @@ import Migrating from 'melody-ui/src/mixins/migrating'
 export default {
     name: 'MSwitch',
     mixins: [Focus('input'), Migrating, emitter],
+    inject: {
+        mForm: {
+            default: ''
+        }
+    },
     props: {
         value: {
             type: [Boolean, String, Number],
@@ -105,7 +109,7 @@ export default {
             return this.value === this.activeValue
         },
         switchDisabled() {
-            return this.disabled
+            return this.disabled || (this.mForm || {}).disabled
         }
     },
     watch: {
@@ -113,6 +117,9 @@ export default {
             this.$refs.input.checked = this.checked
             if (this.activeColor || this.inactiveColor) {
                 this.setBackgroundColor()
+            }
+            if (this.validateEvent) {
+                this.dispatch('MFormItem', 'el.form.change', [this.value])
             }
         }
     },
@@ -132,6 +139,20 @@ export default {
         },
         switchValue() {
             !this.switchDisabled && this.handleChange()
+        },
+        getMigratingConfig() {
+            return {
+                props: {
+                    'on-color': 'on-color is renamed to active-color.',
+                    'off-color': 'off-color is renamed to inactive-color.',
+                    'on-text': 'on-text is renamed to active-text.',
+                    'off-text': 'off-text is renamed to inactive-text.',
+                    'on-value': 'on-value is renamed to active-value.',
+                    'off-value': 'off-value is renamed to inactive-value.',
+                    'on-icon-class': 'on-icon-class is renamed to active-icon-class.',
+                    'off-icon-class': 'off-icon-class is renamed to inactive-icon-class.'
+                }
+            }
         }
     },
     mounted() {

@@ -1,13 +1,13 @@
 let hiddenTextarea
 
 const HIDDEN_STYLE = `
-    height:0 !important;
-    visibility:hidden !important;
-    overflow:hidden !important;
-    position:absolute !important;
-    z-index:-1000 !important;
-    top:0 !important;
-    right:0 !important
+  height:0 !important;
+  visibility:hidden !important;
+  overflow:hidden !important;
+  position:absolute !important;
+  z-index:-1000 !important;
+  top:0 !important;
+  right:0 !important
 `
 
 const CONTEXT_STYLE = [
@@ -30,10 +30,15 @@ const CONTEXT_STYLE = [
 
 function calculateNodeStyling(targetElement) {
     const style = window.getComputedStyle(targetElement)
+
     const boxSizing = style.getPropertyValue('box-sizing')
+
     const paddingSize = parseFloat(style.getPropertyValue('padding-bottom')) + parseFloat(style.getPropertyValue('padding-top'))
+
     const borderSize = parseFloat(style.getPropertyValue('border-bottom-width')) + parseFloat(style.getPropertyValue('border-top-width'))
+
     const contextStyle = CONTEXT_STYLE.map((name) => `${name}:${style.getPropertyValue(name)}`).join(';')
+
     return { contextStyle, paddingSize, borderSize, boxSizing }
 }
 
@@ -42,6 +47,7 @@ export default function calcTextareaHeight(targetElement, minRows = 1, maxRows =
         hiddenTextarea = document.createElement('textarea')
         document.body.appendChild(hiddenTextarea)
     }
+
     let { paddingSize, borderSize, boxSizing, contextStyle } = calculateNodeStyling(targetElement)
 
     hiddenTextarea.setAttribute('style', `${contextStyle};${HIDDEN_STYLE}`)
@@ -52,7 +58,7 @@ export default function calcTextareaHeight(targetElement, minRows = 1, maxRows =
 
     if (boxSizing === 'border-box') {
         height = height + borderSize
-    } else if (borderSize === 'content-box') {
+    } else if (boxSizing === 'content-box') {
         height = height - paddingSize
     }
 
