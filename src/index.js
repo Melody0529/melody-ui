@@ -35,6 +35,7 @@ import Rate from '../packages/rate/index.js'
 import Upload from '../packages/upload/index.js'
 import Progress from '../packages/progress/index.js'
 import ColorPicker from '../packages/color-picker/index.js'
+import Transfer from '../packages/transfer/index.js'
 const components = [
     Scrollbar,
     Row,
@@ -72,7 +73,8 @@ const components = [
     Rate,
     Upload,
     Progress,
-    ColorPicker
+    ColorPicker,
+    Transfer
 ]
 
 const install = function (Vue, opts = {}) {
@@ -126,5 +128,6 @@ export default {
     Rate,
     Upload,
     Progress,
-    ColorPicker
+    ColorPicker,
+    Transfer
 }
